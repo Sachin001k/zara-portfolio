@@ -1,0 +1,100 @@
+================================================================================
+MELODY FLOW — BLOG (MUSINGS) SCHEMA
+Scope: blogs only. Admin users are created in the dashboard (Auth), not via public signup.
+================================================================================
+
+--------------------------------------------------------------------------------
+1) AUTH (built-in)
+--------------------------------------------------------------------------------
+auth.users
+  - id              uuid (PK)
+  - email           text
+  - encrypted_password
+  - ... (managed by Auth)
+  Notes:
+  - Admin accounts are created manually in the project dashboard.
+  - Public signup is not used for this site; only login for admins.
+
+--------------------------------------------------------------------------------
+2) public.profiles
+--------------------------------------------------------------------------------
+Purpose: optional role metadata for blog admins (linked to auth.users).
+
+Columns:
+  id            uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE
+  email         text
+  role          text NOT NULL DEFAULT 'admin'   -- 'admin' for blog editors
+  display_name  text
+  created_at    timestamptz NOT NULL DEFAULT now()
+  updated_at    timestamptz NOT NULL DEFAULT now()
+
+RLS:
+  - Authenticated users can SELECT their own profile
+  - Authenticated admins can SELECT all profiles
+  - Insert/update handled via trigger on signup / service role
+
+--------------------------------------------------------------------------------
+3) public.blogs
+--------------------------------------------------------------------------------
+Purpose: Musings blog posts (music, wellness, matcha, and all that falls between).
+
+Columns:
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid()
+  title           text NOT NULL
+  slug            text NOT NULL UNIQUE
+  excerpt         text
+  content_html    text NOT NULL DEFAULT ''     -- rich HTML from React Quill
+  cover_image_url text
+  status          text NOT NULL DEFAULT 'draft'
+                    CHECK (status IN ('draft', 'published'))
+  author_id       uuid REFERENCES auth.users(id) ON DELETE SET NULL
+  published_at    timestamptz
+  created_at      timestamptz NOT NULL DEFAULT now()
+  updated_at      timestamptz NOT NULL DEFAULT now()
+
+Indexes:
+  - UNIQUE (slug)
+  - INDEX (status, published_at DESC)
+  - INDEX (author_id)
+
+RLS policies:
+  - PUBLIC (anon + authenticated): SELECT where status = 'published'
+  - AUTHENTICATED admin: SELECT all (including drafts)
+  - AUTHENTICATED admin: INSERT
+  - AUTHENTICATED admin: UPDATE
+  - AUTHENTICATED admin: DELETE
+
+Admin check helper:
+  is_blog_admin() → true if auth.uid() exists in profiles with role = 'admin'
+  OR if authenticated (for first-setup; migration grants admin ops to any
+  authenticated user, since only admins are invited via dashboard).
+
+--------------------------------------------------------------------------------
+4) STORAGE (optional — for cover images later)
+--------------------------------------------------------------------------------
+Bucket: blog-covers (public read)
+  - authenticated upload/update/delete
+  - public read
+
+(If not created yet, cover_image_url can still store an external URL.)
+
+--------------------------------------------------------------------------------
+5) APP ENV (blogs only)
+--------------------------------------------------------------------------------
+VITE_SUPABASE_URL=https://tahbrpcthynlwdmctnqw.supabase.co
+VITE_SUPABASE_ANON_KEY=<anon key>
+
+Never display the provider name in the UI.
+
+--------------------------------------------------------------------------------
+6) ROUTES (app)
+--------------------------------------------------------------------------------
+Public:
+  /musings              — list published posts
+  /musings/:slug        — single post
+
+Admin (login required):
+  /admin/login          — email + password (loose email validation)
+  /admin                — list / create / edit / delete posts (React Quill)
+  /admin/posts/new
+  /admin/posts/:id/edit
