@@ -156,7 +156,7 @@ const MusicConnectPage = () => {
               >
                 <div className="flex flex-col sm:flex-row sm:items-start gap-5 mb-6">
                   <img
-                    src="/media/music-connect-logo.png"
+                    src="/media/music-connect-logo.jpg"
                     alt="Music Connect logo"
                     className="w-24 h-24 md:w-28 md:h-28 object-contain shrink-0 rounded-2xl"
                   />
