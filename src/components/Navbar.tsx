@@ -6,10 +6,14 @@ import { Menu, X } from "lucide-react";
 const navItems = [
   { label: "Music", path: "/music" },
   { label: "Music Connect", path: "/music-connect" },
-  { label: "Music & The Brain", path: "/music-and-brain" },
-  { label: "Musings", path: "/musings" },
-  { label: "Psychology Publications", path: "/psychology-publications" },
-  { label: "Photos", path: "/photography" },
+  // Music & The Brain removed from site per Sept 2026 changes list. Uncomment to restore.
+  // { label: "Music & The Brain", path: "/music-and-brain" },
+  // Musings removed from site per Sept 2026 changes list. Uncomment to restore.
+  // { label: "Musings", path: "/musings" },
+  { label: "Published Work", path: "/psychology-publications" },
+  { label: "Photography", path: "/photography" },
+  { label: "Certificates & Awards", path: "/certificates-and-awards" },
+  { label: "References", path: "/references" },
   { label: "Resume", path: "/resume" },
 ];
 

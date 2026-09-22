@@ -55,6 +55,15 @@ const publications = [
     url: "https://www.youngminds.org.uk/young-person/blog/the-double-edged-sword-of-add/",
     isPdf: false,
   },
+  {
+    id: 3,
+    title: "Why Music Matters",
+    journal: "Young Minds",
+    date: "Recent",
+    type: "Blog Post",
+    url: "https://www.youngminds.org.uk/young-person/blog/why-music-matters/",
+    isPdf: false,
+  },
 ];
 
 const tabs: Tab[] = ["Articles", "Publications"];
@@ -134,7 +143,7 @@ const PsychologyPublicationsPage = () => {
                 className="text-4xl md:text-6xl font-light text-foreground"
                 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontStyle: "italic" }}
               >
-                Writing
+                Published Work
               </h1>
             </div>
             <motion.p

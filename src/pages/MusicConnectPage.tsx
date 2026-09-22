@@ -172,14 +172,21 @@ const MusicConnectPage = () => {
 
                 <div className="space-y-4 text-sm font-light text-muted-foreground leading-relaxed">
                   <p>
-                    Music Connect is Zara&apos;s original music-for-wellness curriculum, designed to
+                    <span className="font-medium text-foreground">Music Connect</span> is Zara&apos;s
+                    original music-for-wellness curriculum, designed to
                     promote emotional wellbeing, connection, and self-expression through
                     evidence-informed musical experiences. Its foundations are grounded in
                     psychological theory and research, drawing on findings from neuroscience,
                     developmental psychology, and the wider body of research on music and wellbeing.
                     To deepen her understanding of the field, Zara has undertaken specialist training
-                    with the Nordoff-Robbins Centre for Music Therapy, completed online coursework
-                    through the Berklee College of Music, and observed experienced practitioners
+                    with the{" "}
+                    <span className="font-medium text-foreground">
+                      Nordoff-Robbins Centre for Music Therapy
+                    </span>
+                    , completed online coursework
+                    through the{" "}
+                    <span className="font-medium text-foreground">Berklee College of Music</span>,
+                    and observed experienced practitioners
                     working in clinical settings.
                   </p>
                   <p>
@@ -225,37 +232,69 @@ const MusicConnectPage = () => {
                   </h2>
                 </div>
 
-                <div>
-                  <p className="text-xs font-normal text-foreground mb-2 flex items-center gap-1.5">
-                    <GraduationCap size={13} className="text-olive" /> Teachers
-                  </p>
-                  <ul className="space-y-1.5">
-                    {musicConnectReach.teachers.map((t) => (
-                      <li
-                        key={t.label}
-                        className="flex justify-between gap-3 text-xs font-light text-muted-foreground border-b border-border/15 pb-1.5"
-                      >
-                        <span>{t.label}</span>
-                        <span className="text-foreground tabular-nums">{t.count}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-[10px] font-light text-muted-foreground mt-2">
-                    {teacherTotal} teachers trained across partner organisations
-                  </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-olive/20 p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-light text-olive-dark tabular-nums">
+                      {teacherTotal}
+                    </p>
+                    <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
+                      Teachers Trained
+                    </p>
+                    {/* <p className="text-[9px] font-light text-foreground/50 mt-0.5">
+                      across partner orgs
+                    </p> */}
+                  </div>
+                  <div className="rounded-2xl bg-coral/20 p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-light text-coral tabular-nums">
+                      {musicConnectReach.adultInstructors}
+                    </p>
+                    <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
+                      Adult Instructors
+                    </p>
+                    {/* <p className="text-[9px] font-light text-foreground/50 mt-0.5">globally</p> */}
+                  </div>
+                  <div className="rounded-2xl bg-blush/60 p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-light text-foreground tabular-nums">
+                      {musicConnectReach.studentsAndAdults.toLocaleString()}
+                    </p>
+                    <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
+                      Students &amp; Adults
+                    </p>
+                    <p className="text-[9px] font-light text-foreground/50 mt-0.5">Globally</p>
+                  </div>
+                  <div className="rounded-2xl bg-olive-dark p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-light text-cream tabular-nums">3</p>
+                    <p className="text-[10px] font-normal text-cream/80 uppercase tracking-[0.12em] mt-1">
+                      Countries
+                    </p>
+                    <p className="text-[9px] font-light text-cream/50 mt-0.5">India · UK · US</p>
+                  </div>
                 </div>
 
-                <div className="space-y-2 pt-1">
-                  <p className="text-xs font-light text-muted-foreground">
-                    <span className="text-foreground font-normal">Adult instructors:</span>{" "}
-                    {musicConnectReach.adultInstructors} globally
+                <div>
+                  <p className="text-xs font-normal text-foreground mb-3 flex items-center gap-1.5">
+                    <GraduationCap size={13} className="text-olive" /> Teachers by organisation
                   </p>
-                  <p className="text-xs font-light text-muted-foreground">
-                    <span className="text-foreground font-normal">Students:</span>{" "}
-                    {musicConnectReach.studentsAndAdults.toLocaleString()} students and adults
-                    globally
-                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {musicConnectReach.teachers.map((t) => (
+                      <div
+                        key={t.label}
+                        className="rounded-2xl bg-olive/12 border border-olive/30 p-4 text-center"
+                      >
+                        <p className="text-xl md:text-2xl font-light text-olive-dark tabular-nums">
+                          {t.count}
+                        </p>
+                        <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.1em] mt-1">
+                          {t.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+
+                <p className="text-[10px] font-light text-muted-foreground">
+                  Reaching schools and communities across India, the UK, and the US
+                </p>
 
                 <div className="pt-2 border-t border-border/20">
                   <p className="text-[10px] font-light text-coral uppercase tracking-[0.2em] mb-1">
@@ -267,6 +306,33 @@ const MusicConnectPage = () => {
                 </div>
               </motion.aside>
             </div>
+
+            <motion.section
+              custom={1.5}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="mb-12 glass-card p-8 md:p-10 text-center"
+              style={{
+                boxShadow:
+                  "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
+              }}
+            >
+              <div className="space-y-5 max-w-2xl mx-auto">
+                <h2 className="text-xl md:text-2xl font-light text-foreground">
+                  Download the curriculum
+                </h2>
+                <a
+                  href={MUSIC_CONNECT_DRIVE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-olive px-12 py-4 text-base font-light text-primary-foreground hover:bg-olive-dark transition-colors"
+                  style={{ boxShadow: "0 4px 15px hsl(var(--olive) / 0.3)" }}
+                >
+                  Download curriculum
+                </a>
+              </div>
+            </motion.section>
 
             <motion.div
               custom={2}
@@ -284,32 +350,6 @@ const MusicConnectPage = () => {
                 <SchoolPost key={session.id} session={session} index={index + 3} />
               ))}
             </div>
-
-            <motion.section
-              custom={schoolSessions.length + 3}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={sectionVariants}
-              className="mt-14 glass-card p-6 md:p-8"
-              style={{
-                boxShadow:
-                  "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
-              }}
-            >
-              <div className="space-y-4 max-w-2xl">
-                <h2 className="text-base font-light text-foreground">Download the curriculum</h2>
-                <a
-                  href={MUSIC_CONNECT_DRIVE_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-olive px-8 py-3 text-sm font-light text-primary-foreground hover:bg-olive-dark transition-colors"
-                  style={{ boxShadow: "0 4px 15px hsl(var(--olive) / 0.3)" }}
-                >
-                  Download curriculum
-                </a>
-              </div>
-            </motion.section>
           </div>
         </div>
       </div>

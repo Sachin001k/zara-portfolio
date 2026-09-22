@@ -15,6 +15,8 @@ import GalleryPage from "./pages/GalleryPage.tsx";
 import PhotographyPage from "./pages/PhotographyPage.tsx";
 import ArticlesPage from "./pages/ArticlesPage.tsx";
 import PsychologyPublicationsPage from "./pages/PsychologyPublicationsPage.tsx";
+import CertificatesAwardsPage from "./pages/CertificatesAwardsPage.tsx";
+import ReferencesPage from "./pages/ReferencesPage.tsx";
 import MusicAndBrainPage from "./pages/MusicAndBrainPage.tsx";
 import MusingsPage from "./pages/MusingsPage.tsx";
 import MusingPostPage from "./pages/MusingPostPage.tsx";
@@ -48,10 +50,14 @@ const App = () => (
             <Route path="/photography" element={<WithNavbar><PhotographyPage /></WithNavbar>} />
             <Route path="/gallery" element={<WithNavbar><GalleryPage /></WithNavbar>} />
             <Route path="/psychology-publications" element={<WithNavbar><PsychologyPublicationsPage /></WithNavbar>} />
-            <Route path="/music-and-brain" element={<WithNavbar><MusicAndBrainPage /></WithNavbar>} />
+            <Route path="/certificates-and-awards" element={<WithNavbar><CertificatesAwardsPage /></WithNavbar>} />
+            <Route path="/references" element={<WithNavbar><ReferencesPage /></WithNavbar>} />
+            {/* Music & The Brain section removed from site per Sept 2026 changes list. Uncomment to restore. */}
+            {/* <Route path="/music-and-brain" element={<WithNavbar><MusicAndBrainPage /></WithNavbar>} /> */}
             <Route path="/articles" element={<WithNavbar><ArticlesPage /></WithNavbar>} />
-            <Route path="/musings" element={<WithNavbar><MusingsPage /></WithNavbar>} />
-            <Route path="/musings/:slug" element={<WithNavbar><MusingPostPage /></WithNavbar>} />
+            {/* Musings section removed from site per Sept 2026 changes list. Uncomment to restore. */}
+            {/* <Route path="/musings" element={<WithNavbar><MusingsPage /></WithNavbar>} /> */}
+            {/* <Route path="/musings/:slug" element={<WithNavbar><MusingPostPage /></WithNavbar>} /> */}
 
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route

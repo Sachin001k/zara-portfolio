@@ -7,12 +7,23 @@ import {
   FlaskConical,
   Sparkles,
   Music2,
+  ExternalLink,
   type LucideIcon,
 } from "lucide-react";
 import { siteContact } from "@/lib/site";
+import GooglePhotosVideo from "@/components/GooglePhotosVideo";
 
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@ZaraPereira-k3b";
 const FEATURED_VIDEO_ID = "fw6jvI9JViQ";
+
+const AMIS_WEBSITE_URL = "https://amis-online.org/";
+const AMIS_LIVE_STREAM_2026_URL = "https://www.youtube.com/live/m6mxKxBDjhE?si=A5QWkmIzVHXab1MD";
+const AMIS_CHOIR_ALBUM_URL =
+  "https://photos.google.com/share/AF1QipMJK92wMgRg9Ed4x5dJ0sQ-X_zxYxjADbA5nFu3tArM_2rNmnhXvA-52E9az-s71A?obfsgid=117410301389813695342&key=cFlnX1NndVF5bVN2ZEVsdGRNMG1jTDNPdEJnTWxn";
+const MUSIC_REFERENCE_ALBUM_URL =
+  "https://photos.google.com/share/AF1QipNAJK6rqvpZ-fOgBnzs85oHjSdTuvBhilZ70jByFIPMYbjpxfHEWcORQwz-fHn_FA?obfsgid=117410301389813695342&key=cFd0OTZOZDRvcHEzVTA5cVNjVDUzY1Nodk9PeUtn";
+const ZARA_SINGING_ALBUM_URL =
+  "https://photos.google.com/share/AF1QipNy3AZzH-UFUpPX3yLdBnJveOJug01CcPgwg3hx6knM92byDSiVAnm7Z8biZIobcA?x=106694151&obfsgid=117410301389813695342&key=NWVfNHM1Z0lTMmJXTXp0eUU0SHhBVDVudWVnb05B";
 
 const recentVideos = [
   {
@@ -42,9 +53,10 @@ const journeyMilestones: {
   description: string;
 }[] = [
   {
+    // Placeholder date — docx asked to correct this to "Since Grade 8"; confirm actual start year.
     icon: Sparkles,
-    label: "Since Childhood",
-    date: "2010 – 2016",
+    label: "Since Grade 8",
+    date: "2022 – Present",
     description:
       "Early piano lessons, discovering a love for singing, and finding joy in every note.",
   },
@@ -238,6 +250,78 @@ const MusicPage = () => {
             </div>
           </motion.section>
 
+          {/* ── AMIS Choir ── */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.6 }}
+            className="mb-16"
+          >
+            <div className="flex items-center gap-2 mb-5">
+              <Award size={20} strokeWidth={1.4} className="text-olive" />
+              <h2 className="text-xl md:text-2xl font-light text-foreground tracking-wide">
+                AMIS Choir
+              </h2>
+            </div>
+
+            <div
+              className="bg-card/80 backdrop-blur-sm border border-border/30 rounded-2xl p-6 md:p-8"
+              style={{
+                boxShadow:
+                  "0 12px 40px -10px hsl(var(--shadow-color) / 0.12), inset 0 1px 0 hsl(var(--cream) / 0.5)",
+              }}
+            >
+              <p className="text-sm text-muted-foreground font-light leading-relaxed mb-6 max-w-2xl">
+                Zara performs with AMIS — the Association for Music in International Schools — an
+                international choir and honor ensemble programme bringing together student
+                musicians from schools around the world for festivals, workshops, and live
+                performances.
+              </p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                {[
+                  { src: "/media/amis-choir/choir-1.jpg", alt: "AMIS choir performing on stage" },
+                  { src: "/media/amis-choir/choir-2.jpg", alt: "AMIS choir ensemble singing" },
+                  { src: "/media/amis-choir/choir-3.jpg", alt: "AMIS small vocal ensemble" },
+                  { src: "/media/amis-choir/choir-4.jpg", alt: "AMIS children's choir performance" },
+                ].map((photo) => (
+                  <div
+                    key={photo.src}
+                    className="aspect-square rounded-xl overflow-hidden border border-border/20"
+                  >
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <GooglePhotosVideo
+                  href={AMIS_CHOIR_ALBUM_URL}
+                  label="Watch AMIS choir performances"
+                  poster="/media/amis-choir-poster.jpg"
+                />
+                <GooglePhotosVideo
+                  href={AMIS_LIVE_STREAM_2026_URL}
+                  label="Watch the 2026 AMIS live stream"
+                />
+              </div>
+
+              <a
+                href={AMIS_WEBSITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-light text-olive hover:text-olive-dark transition-colors"
+              >
+                Learn more about AMIS <ExternalLink size={12} />
+              </a>
+            </div>
+          </motion.section>
+
           {/* ── Musical Journey (reduced prominence) ── */}
           <motion.section
             initial={{ opacity: 0, y: 16 }}
@@ -283,6 +367,43 @@ const MusicPage = () => {
                   </motion.div>
                 );
               })}
+            </div>
+
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-light mt-8 mb-3">
+              Music, Through the Years
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { src: "/media/childhood/child-1.jpg", alt: "Zara singing as a child" },
+                { src: "/media/childhood/child-2.jpg", alt: "Zara performing on stage as a child" },
+                { src: "/media/childhood/child-3.jpg", alt: "Zara playing piano" },
+                { src: "/media/childhood/child-4.jpg", alt: "Zara singing with a microphone" },
+              ].map((photo) => (
+                <div
+                  key={photo.src}
+                  className="aspect-square rounded-xl overflow-hidden border border-border/20"
+                >
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 max-w-xl">
+              <GooglePhotosVideo
+                href={MUSIC_REFERENCE_ALBUM_URL}
+                label="Music reference videos"
+                poster="/media/music-reference-poster.jpg"
+              />
+              <GooglePhotosVideo
+                href={ZARA_SINGING_ALBUM_URL}
+                label="Zara singing"
+                poster="/media/zara-singing-poster.jpg"
+              />
             </div>
           </motion.section>
         </div>
