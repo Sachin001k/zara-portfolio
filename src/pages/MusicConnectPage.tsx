@@ -2,8 +2,9 @@ import { motion } from "framer-motion";
 import MarqueeText from "@/components/MarqueeText";
 import GooglePhotosVideo from "@/components/GooglePhotosVideo";
 import { musicConnectReach, schoolSessions } from "@/data/schoolsSessions";
-import { MUSIC_CONNECT_DRIVE_URL } from "@/data/musicConnect";
-import { Calendar, School, Users, GraduationCap } from "lucide-react";
+import { Calendar, School, Users, GraduationCap, Eye, Download } from "lucide-react";
+
+const CURRICULUM_PDF_URL = "/documents/Music-Connect-Curriculum.pdf";
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -209,6 +210,25 @@ const MusicConnectPage = () => {
                     *Zara does not claim to be a music therapist.
                   </p>
                 </div>
+
+                <div className="flex flex-wrap items-center gap-3 mt-5">
+                  <a
+                    href={CURRICULUM_PDF_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-olive/30 px-4 py-2 text-xs font-light text-olive-dark hover:bg-olive/10 transition-colors"
+                  >
+                    <Eye size={13} /> Preview curriculum
+                  </a>
+                  <a
+                    href={CURRICULUM_PDF_URL}
+                    download="Music-Connect-Curriculum.pdf"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-olive px-4 py-2 text-xs font-light text-primary-foreground hover:bg-olive-dark transition-colors"
+                    style={{ boxShadow: "0 4px 15px hsl(var(--olive) / 0.3)" }}
+                  >
+                    <Download size={13} /> Download curriculum
+                  </a>
+                </div>
               </motion.div>
 
               {/* Reach sidebar */}
@@ -233,8 +253,8 @@ const MusicConnectPage = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl bg-olive/20 p-5 text-center">
-                    <p className="text-2xl md:text-3xl font-light text-olive-dark tabular-nums">
+                  <div className="rounded-2xl bg-olive/35 p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-bold text-olive-dark tabular-nums">
                       {teacherTotal}
                     </p>
                     <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
@@ -244,8 +264,8 @@ const MusicConnectPage = () => {
                       across partner orgs
                     </p> */}
                   </div>
-                  <div className="rounded-2xl bg-coral/20 p-5 text-center">
-                    <p className="text-2xl md:text-3xl font-light text-coral tabular-nums">
+                  <div className="rounded-2xl bg-coral/35 p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-bold text-coral tabular-nums">
                       {musicConnectReach.adultInstructors}
                     </p>
                     <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
@@ -253,8 +273,8 @@ const MusicConnectPage = () => {
                     </p>
                     {/* <p className="text-[9px] font-light text-foreground/50 mt-0.5">globally</p> */}
                   </div>
-                  <div className="rounded-2xl bg-blush/60 p-5 text-center">
-                    <p className="text-2xl md:text-3xl font-light text-foreground tabular-nums">
+                  <div className="rounded-2xl bg-blush/80 p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-bold text-foreground tabular-nums">
                       {musicConnectReach.studentsAndAdults.toLocaleString()}
                     </p>
                     <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
@@ -263,11 +283,11 @@ const MusicConnectPage = () => {
                     <p className="text-[9px] font-light text-foreground/50 mt-0.5">Globally</p>
                   </div>
                   <div className="rounded-2xl bg-olive-dark p-5 text-center">
-                    <p className="text-2xl md:text-3xl font-light text-cream tabular-nums">3</p>
+                    <p className="text-2xl md:text-3xl font-bold text-cream tabular-nums">3</p>
                     <p className="text-[10px] font-normal text-cream/80 uppercase tracking-[0.12em] mt-1">
                       Countries
                     </p>
-                    <p className="text-[9px] font-light text-cream/50 mt-0.5">India · UK · US</p>
+                    <p className="text-[10px] font-bold text-cream mt-0.5">India · UK · US</p>
                   </div>
                 </div>
 
@@ -279,9 +299,9 @@ const MusicConnectPage = () => {
                     {musicConnectReach.teachers.map((t) => (
                       <div
                         key={t.label}
-                        className="rounded-2xl bg-olive/12 border border-olive/30 p-4 text-center"
+                        className="rounded-2xl bg-olive/25 border border-olive/40 p-4 text-center"
                       >
-                        <p className="text-xl md:text-2xl font-light text-olive-dark tabular-nums">
+                        <p className="text-xl md:text-2xl font-bold text-olive-dark tabular-nums">
                           {t.count}
                         </p>
                         <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.1em] mt-1">
@@ -306,33 +326,6 @@ const MusicConnectPage = () => {
                 </div>
               </motion.aside>
             </div>
-
-            <motion.section
-              custom={1.5}
-              initial="hidden"
-              animate="visible"
-              variants={sectionVariants}
-              className="mb-12 glass-card p-8 md:p-10 text-center"
-              style={{
-                boxShadow:
-                  "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
-              }}
-            >
-              <div className="space-y-5 max-w-2xl mx-auto">
-                <h2 className="text-xl md:text-2xl font-light text-foreground">
-                  Download the curriculum
-                </h2>
-                <a
-                  href={MUSIC_CONNECT_DRIVE_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-olive px-12 py-4 text-base font-light text-primary-foreground hover:bg-olive-dark transition-colors"
-                  style={{ boxShadow: "0 4px 15px hsl(var(--olive) / 0.3)" }}
-                >
-                  Download curriculum
-                </a>
-              </div>
-            </motion.section>
 
             <motion.div
               custom={2}
