@@ -21,7 +21,7 @@ const certificates: {
   },
   {
     icon: GraduationCap,
-    title: "Trinity College London — Grade 8 Voice",
+    title: "Trinity College London — Grade 7 Voice",
     issuer: "Trinity College London",
     date: "2020 – 2023",
     description: "Graded examination in music performance and theory, achieved with distinction.",

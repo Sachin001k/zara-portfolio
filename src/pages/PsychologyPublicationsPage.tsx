@@ -4,19 +4,30 @@ import { BookOpen, Clock, ArrowRight, X, ExternalLink, Feather, BookMarked, File
 
 type Tab = "Articles" | "Poetry" | "Short Stories" | "Publications";
 
-const articles = [
-  {
-    id: 1,
-    title: "Addressing Adolescent Mental Health in Schools",
-    excerpt:
-      "Published in Times NIE — exploring how music and structured wellbeing programmes can bridge the growing mental health gap among teenagers in school environments.",
-    readTime: "3 min read",
-    date: "March 18, 2025",
-    publication: "Times NIE",
-    pdfUrl: "https://drive.google.com/file/d/1-FU0EU3WJXaa4hP8Y6sMFch2SwCQ1zIs/view",
-    body: `Published in Times NIE on Tuesday, March 18, 2025 — written in Grade 10.\n\nAdolescent mental health is one of the most pressing challenges facing schools today. With rising rates of anxiety, academic burnout, and social disconnection, the need for embedded, accessible support has never been more urgent.\n\nMusic offers a uniquely low-barrier intervention. Unlike traditional counselling, which requires students to articulate distress in words, music provides an alternative language — one that bypasses the cortical language centres and engages emotional processing directly. Group music-making, in particular, activates the social bonding systems of the brain, reducing feelings of isolation while building a sense of shared purpose.\n\nSchools that have integrated structured music wellness programmes report measurable improvements in student wellbeing indicators: reduced anxiety self-reports, improved attendance, and greater classroom participation. These outcomes suggest that music education — properly designed and delivered — functions not just as artistic enrichment, but as a form of preventive mental healthcare.\n\nThe investment required is modest. The return, measured in students who feel seen, heard, and supported, is profound.`,
-  },
-];
+// Hidden for now, pending updated details — uncomment to restore.
+// const articles = [
+//   {
+//     id: 1,
+//     title: "Addressing Adolescent Mental Health in Schools",
+//     excerpt:
+//       "Published in Times NIE — exploring how music and structured wellbeing programmes can bridge the growing mental health gap among teenagers in school environments.",
+//     readTime: "3 min read",
+//     date: "March 18, 2025",
+//     publication: "Times NIE",
+//     pdfUrl: "https://drive.google.com/file/d/1-FU0EU3WJXaa4hP8Y6sMFch2SwCQ1zIs/view",
+//     body: `Published in Times NIE on Tuesday, March 18, 2025 — written in Grade 10.\n\nAdolescent mental health is one of the most pressing challenges facing schools today. With rising rates of anxiety, academic burnout, and social disconnection, the need for embedded, accessible support has never been more urgent.\n\nMusic offers a uniquely low-barrier intervention. Unlike traditional counselling, which requires students to articulate distress in words, music provides an alternative language — one that bypasses the cortical language centres and engages emotional processing directly. Group music-making, in particular, activates the social bonding systems of the brain, reducing feelings of isolation while building a sense of shared purpose.\n\nSchools that have integrated structured music wellness programmes report measurable improvements in student wellbeing indicators: reduced anxiety self-reports, improved attendance, and greater classroom participation. These outcomes suggest that music education — properly designed and delivered — functions not just as artistic enrichment, but as a form of preventive mental healthcare.\n\nThe investment required is modest. The return, measured in students who feel seen, heard, and supported, is profound.`,
+//   },
+// ];
+const articles: {
+  id: number;
+  title: string;
+  excerpt: string;
+  readTime: string;
+  date: string;
+  publication: string;
+  pdfUrl: string;
+  body: string;
+}[] = [];
 
 const poems: {
   id: number;
@@ -66,7 +77,8 @@ const publications = [
   },
 ];
 
-const tabs: Tab[] = ["Articles", "Publications"];
+// "Articles" tab hidden for now, pending updated details — add "Articles" back to restore.
+const tabs: Tab[] = ["Publications"];
 
 const tabIcons: Record<Tab, React.ReactNode> = {
   Articles: <FileText size={13} strokeWidth={1.4} />,
@@ -76,7 +88,7 @@ const tabIcons: Record<Tab, React.ReactNode> = {
 };
 
 const PsychologyPublicationsPage = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("Articles");
+  const [activeTab, setActiveTab] = useState<Tab>("Publications");
   const [selectedArticle, setSelectedArticle] = useState<(typeof articles)[0] | null>(null);
   const [selectedPoem, setSelectedPoem] = useState<(typeof poems)[0] | null>(null);
   const [selectedStory, setSelectedStory] = useState<(typeof stories)[0] | null>(null);
