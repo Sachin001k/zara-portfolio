@@ -63,6 +63,29 @@ const articles: Article[] = [
     ],
   },
   {
+    id: "indian-express-music-connect",
+    title:
+      "Zara Pereira, a Grade 12 student at the American School of Bombay and founder of Music Connect, a music wellness curriculum for children and adolescents",
+    publication: "The Indian Express – Education",
+    date: "September 30, 2026",
+    readTime: "4 min read",
+    byline: "By Aditya Raj, The Indian Express – Education",
+    image: "/media/publications/indian-express-music-connect.jpg",
+    imageAlt: "Indian Express Education feature on Zara Pereira and Music Connect",
+    excerpt:
+      "Inside Zara Pereira’s educator workshop, where she actively trains local teachers and NGO partners to independently run her psychologically-informed Music Connect wellness curriculum.",
+    body: [
+      "Emotional well-being in adolescence is a key precursor to lifelong cognitive functioning, however epidemiological data shows a large proportion of people suffer from anxiety and depressive symptoms in adolescence. Denham (2006) linked emotional competence to the core of academic functioning and total social adjustment, and he suggested that such environments are conducive to development of these competencies. Music has been used as a universal medium for emotional expression; and more recent studies have outlined the mechanisms by which musical engagement and activities can bring about emotional change.",
+      "Zara Pereira, a trained musician, pianist and psychology enthusiast, was first exposed to music therapy by Ms. Sara Ellen D’Souza, a professional special educator and music therapist. Zara trained under Ms. D’Souza for around a year and worked closely with children with neurodevelopmental disorders, using music based activities to improve communication, turn taking and other developmental skills.",
+      "While volunteering with Happy Feet Home Foundation, an NGO providing free emotional, psychosocial, educational, vocational, and nutritional support to children living with life-threatening and life-limiting illnesses, Zara noticed that they had no established music program. To address the needs of the organization, Zara proposed to create a pilot music wellness intervention tailored to the specific requirements of the children at Happy Feet Home.",
+      "She created a 5-session curriculum, inspired by the Nordoff-Robbins Music Therapy technique to improve mood and social-emotional learning. She piloted the curriculum with 30 students and used the Moods and Feelings Questionnaire (MCQ) to measure the effectiveness of her sessions. 83% of the participants showed an improvement in overall mood across the 5 sessions. Zara authored a corresponding academic research paper that she presented at the 4th Global Conference on Psychology and is set to be published in the Scopus-Indexed Adolescencia e Saude.",
+      "Based on the findings of her research paper and feedback from the pilot, the curriculum eventually turned into Music Connect, music therapist and psychologist endorsed program consisting of 5-sessions of interactive music activities. Each session is based on a particular theme and aids children in communicating, expressing their feelings, forming links with others and becoming more resilient. Zara’s curriculum was psychologically-informed and incorporated research from neuroscience and developmental psychology. Moreover, Zara included her learnings from attending reputed training programs and courses from NYU Steinhardt’s Nordoff Robbins Center of Music Therapy and Berklee College of Music Online into her curriculum.",
+      "In order to expand the reach of Music Connect, Zara turned it into a national level educator training initiative where she trained teachers on how to independently run her curriculum and its activities with their students. Zara is the first and only ever high school student to have taken part in a teacher training workshop at American School of Bombay’s Teacher Training Academy which provides instructional coaching and professional development for local educators and partner NGOs in Mumbai.",
+      "Zara has since trained 67 teachers with partner organisations and an additional 15 instructors overseas. Together, they have reached more than 1,050 students and adults in India, the UK, and the USA. In Mumbai the program is carried out with organisations such as the Akanksha Foundation, the Vipla Foundation, the Happy Feet Home Foundation, the CSR Club at the American School of Bombay and Aseema NGO. It has also been conducted at Heavers Day Care Services in the UK and at Sage Eldercare in New Jersey. Zara is currently in the process of collaborating with Dr. Farah, a senior anaesthesiologist and music therapist at Lok Nayak Hospital & Maulana Azad Medical College, New Delhi to expand a music intervention for caregivers across Mumbai.",
+      "Through Music Connect, Zara hopes to continue making music-based wellness more accessible to young people and communities. By bringing together her interests in music and psychology, she aims to demonstrate how music can be used not only as a form of expression, but also as a meaningful tool for emotional well-being and connection.",
+    ],
+  },
+  {
     id: "why-music-matters",
     title: "Why Music Matters",
     publication: "YoungMinds",
@@ -193,7 +216,7 @@ const PsychologyPublicationsPage = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              The Times of India · YoungMinds
+              The Times of India · The Indian Express · YoungMinds
             </motion.p>
             <motion.div
               className="w-24 h-px mx-auto mt-4"
