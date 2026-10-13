@@ -13,6 +13,7 @@ import MusicConnectPage from "./pages/MusicConnectPage.tsx";
 import ResumePage from "./pages/ResumePage.tsx";
 import GalleryPage from "./pages/GalleryPage.tsx";
 import PhotographyPage from "./pages/PhotographyPage.tsx";
+import PhotographyCollectionPage from "./pages/PhotographyCollectionPage.tsx";
 import ArticlesPage from "./pages/ArticlesPage.tsx";
 import PsychologyPublicationsPage from "./pages/PsychologyPublicationsPage.tsx";
 import CertificatesAwardsPage from "./pages/CertificatesAwardsPage.tsx";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/music-connect" element={<WithNavbar><MusicConnectPage /></WithNavbar>} />
             <Route path="/resume" element={<WithNavbar><ResumePage /></WithNavbar>} />
             <Route path="/photography" element={<WithNavbar><PhotographyPage /></WithNavbar>} />
+            <Route path="/photography/:collection" element={<WithNavbar><PhotographyCollectionPage /></WithNavbar>} />
             <Route path="/gallery" element={<WithNavbar><GalleryPage /></WithNavbar>} />
             <Route path="/psychology-publications" element={<WithNavbar><PsychologyPublicationsPage /></WithNavbar>} />
             <Route path="/certificates-and-awards" element={<WithNavbar><CertificatesAwardsPage /></WithNavbar>} />

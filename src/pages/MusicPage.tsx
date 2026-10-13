@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { siteContact } from "@/lib/site";
 import GooglePhotosVideo from "@/components/GooglePhotosVideo";
+import { useYouTubeStats } from "@/hooks/useYouTubeStats";
 
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@ZaraPereira-k3b";
 const FEATURED_VIDEO_ID = "fw6jvI9JViQ";
@@ -20,10 +21,15 @@ const AMIS_WEBSITE_URL = "https://amis-online.org/";
 const AMIS_LIVE_STREAM_2026_URL = "https://www.youtube.com/live/m6mxKxBDjhE?si=A5QWkmIzVHXab1MD";
 const AMIS_CHOIR_ALBUM_URL =
   "https://photos.google.com/share/AF1QipMJK92wMgRg9Ed4x5dJ0sQ-X_zxYxjADbA5nFu3tArM_2rNmnhXvA-52E9az-s71A?obfsgid=117410301389813695342&key=cFlnX1NndVF5bVN2ZEVsdGRNMG1jTDNPdEJnTWxn";
+const AMIS_HONOUR_CHOIR_ALBUM_URL = "https://photos.app.goo.gl/cSKMyhnuLNrVE8Fm9";
 const MUSIC_REFERENCE_ALBUM_URL =
   "https://photos.google.com/share/AF1QipNAJK6rqvpZ-fOgBnzs85oHjSdTuvBhilZ70jByFIPMYbjpxfHEWcORQwz-fHn_FA?obfsgid=117410301389813695342&key=cFd0OTZOZDRvcHEzVTA5cVNjVDUzY1Nodk9PeUtn";
 const ZARA_SINGING_ALBUM_URL =
   "https://photos.google.com/share/AF1QipNy3AZzH-UFUpPX3yLdBnJveOJug01CcPgwg3hx6knM92byDSiVAnm7Z8biZIobcA?x=106694151&obfsgid=117410301389813695342&key=NWVfNHM1Z0lTMmJXTXp0eUU0SHhBVDVudWVnb05B";
+
+// Fallback numbers, shown only if the live /api/youtube lookup fails.
+const FALLBACK_SUBSCRIBERS = 39;
+const FALLBACK_VIDEO_COUNT = 9;
 
 const recentVideos = [
   {
@@ -45,6 +51,11 @@ const recentVideos = [
     url: "https://www.youtube.com/watch?v=PvKfBlC-9Kw",
   },
 ];
+
+const formatCount = (count: number, noun: string) =>
+  `${count.toLocaleString()} ${noun}${count === 1 ? "" : "s"}`;
+
+const videoIdFromUrl = (url: string) => new URL(url).searchParams.get("v") ?? "";
 
 const journeyMilestones: {
   icon: LucideIcon;
@@ -114,6 +125,13 @@ const PlayIcon = () => (
 );
 
 const MusicPage = () => {
+  const { data: youtubeStats } = useYouTubeStats(recentVideos.map((v) => videoIdFromUrl(v.url)));
+  const subscriberCount = youtubeStats?.subscribers ?? FALLBACK_SUBSCRIBERS;
+  const videoCount = youtubeStats?.videos ?? FALLBACK_VIDEO_COUNT;
+  const liveViews = (video: (typeof recentVideos)[number]) => {
+    const count = youtubeStats?.views[videoIdFromUrl(video.url)];
+    return count === undefined ? video.views : formatCount(count, "view");
+  };
   return (
     <div className="page-scroll relative min-h-screen">
       <div className="absolute inset-0 grid-paper-bg" />
@@ -190,10 +208,10 @@ const MusicPage = () => {
                       <p className="text-xs text-muted-foreground font-light">@ZaraPereira-k3b</p>
                       <div className="flex gap-4 mt-1">
                         <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                          34 subscribers
+                          {formatCount(subscriberCount, "subscriber")}
                         </span>
                         <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                          6 videos
+                          {formatCount(videoCount, "video")}
                         </span>
                       </div>
                     </div>
@@ -240,7 +258,7 @@ const MusicPage = () => {
                           {video.title}
                         </p>
                         <p className="text-[10px] text-muted-foreground/60 font-light mt-1">
-                          {video.views}
+                          {liveViews(video)}
                         </p>
                       </div>
                     </a>
@@ -260,7 +278,7 @@ const MusicPage = () => {
             <div className="flex items-center gap-2 mb-5">
               <Award size={20} strokeWidth={1.4} className="text-olive" />
               <h2 className="text-xl md:text-2xl font-light text-foreground tracking-wide">
-                AMIS Choir
+                Choir participation
               </h2>
             </div>
 
@@ -275,7 +293,7 @@ const MusicPage = () => {
                 Zara performs with AMIS — the Association for Music in International Schools — an
                 international choir and honor ensemble programme bringing together student
                 musicians from schools around the world for festivals, workshops, and live
-                performances.
+                performances. Zara has been admitted to the selective honour choir AMIS.
               </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
@@ -299,7 +317,7 @@ const MusicPage = () => {
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <GooglePhotosVideo
                   href={AMIS_CHOIR_ALBUM_URL}
                   label="Watch AMIS choir performances"
@@ -308,6 +326,10 @@ const MusicPage = () => {
                 <GooglePhotosVideo
                   href={AMIS_LIVE_STREAM_2026_URL}
                   label="Watch the 2026 AMIS live stream"
+                />
+                <GooglePhotosVideo
+                  href={AMIS_HONOUR_CHOIR_ALBUM_URL}
+                  label="View the AMIS honour choir album"
                 />
               </div>
 

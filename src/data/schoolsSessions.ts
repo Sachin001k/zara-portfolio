@@ -149,14 +149,10 @@ export const schoolSessions: SchoolSession[] = [
 ];
 
 export const musicConnectReach = {
-  teachers: [
-    { label: "Akanksha", count: 22 },
-    { label: "Aseema", count: 20 },
-    { label: "ASB Teaching Academy", count: 15 },
-    { label: "Vipla", count: 10 },
-  ],
-  adultInstructors: 15,
-  studentsAndAdults: 1050,
+  teachersAndEducators: 182,
+  studentsAndAdults: 6000,
+  countries: 3,
+  partnerOrganizations: 20,
 } as const;
 
 export function getSchoolVideoUrl(photoId: string) {

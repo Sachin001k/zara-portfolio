@@ -43,7 +43,8 @@ const Navbar = () => {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center">
           {navItems.map((item, index) => {
-            const isActive = location.pathname === item.path;
+            const isActive =
+              location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
             return (
               <div key={item.path} className="flex items-center">
                 {index > 0 && (
@@ -118,7 +119,7 @@ const Navbar = () => {
                   to={item.path}
                   onClick={() => setMobileOpen(false)}
                   className={`py-2 px-4 rounded-lg text-sm font-light transition-colors ${
-                    location.pathname === item.path
+                    location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)
                       ? "bg-olive/15 text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   }`}

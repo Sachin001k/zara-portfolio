@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import MarqueeText from "@/components/MarqueeText";
 import GooglePhotosVideo from "@/components/GooglePhotosVideo";
 import { musicConnectReach, schoolSessions } from "@/data/schoolsSessions";
-import { Calendar, School, Users, GraduationCap, Eye, Download } from "lucide-react";
+import { Calendar, School, Users, Eye, Download } from "lucide-react";
 
 const CURRICULUM_PDF_URL = "/documents/Music-Connect-Curriculum.pdf";
 
@@ -126,8 +126,6 @@ const SchoolPost = ({
 );
 
 const MusicConnectPage = () => {
-  const teacherTotal = musicConnectReach.teachers.reduce((sum, t) => sum + t.count, 0);
-
   return (
     <div className="page-scroll relative">
       <div className="absolute inset-0 grid-paper-bg" />
@@ -255,27 +253,15 @@ const MusicConnectPage = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-2xl bg-olive/35 p-5 text-center">
                     <p className="text-2xl md:text-3xl font-bold text-olive-dark tabular-nums">
-                      {teacherTotal}
+                      {musicConnectReach.teachersAndEducators}
                     </p>
                     <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
-                      Teachers Trained
+                      Teachers &amp; Educators
                     </p>
-                    {/* <p className="text-[9px] font-light text-foreground/50 mt-0.5">
-                      across partner orgs
-                    </p> */}
-                  </div>
-                  <div className="rounded-2xl bg-coral/35 p-5 text-center">
-                    <p className="text-2xl md:text-3xl font-bold text-coral tabular-nums">
-                      {musicConnectReach.adultInstructors}
-                    </p>
-                    <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
-                      Adult Instructors
-                    </p>
-                    {/* <p className="text-[9px] font-light text-foreground/50 mt-0.5">globally</p> */}
                   </div>
                   <div className="rounded-2xl bg-blush/80 p-5 text-center">
                     <p className="text-2xl md:text-3xl font-bold text-foreground tabular-nums">
-                      {musicConnectReach.studentsAndAdults.toLocaleString()}
+                      {musicConnectReach.studentsAndAdults.toLocaleString()}+
                     </p>
                     <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
                       Students &amp; Adults
@@ -283,32 +269,21 @@ const MusicConnectPage = () => {
                     <p className="text-[9px] font-light text-foreground/50 mt-0.5">Globally</p>
                   </div>
                   <div className="rounded-2xl bg-olive-dark p-5 text-center">
-                    <p className="text-2xl md:text-3xl font-bold text-cream tabular-nums">3</p>
+                    <p className="text-2xl md:text-3xl font-bold text-cream tabular-nums">
+                      {musicConnectReach.countries}
+                    </p>
                     <p className="text-[10px] font-normal text-cream/80 uppercase tracking-[0.12em] mt-1">
                       Countries
                     </p>
-                    <p className="text-[10px] font-bold text-cream mt-0.5">India · UK · US</p>
+                    <p className="text-[10px] font-bold text-cream mt-0.5">India · UK · USA</p>
                   </div>
-                </div>
-
-                <div>
-                  <p className="text-xs font-normal text-foreground mb-3 flex items-center gap-1.5">
-                    <GraduationCap size={13} className="text-olive" /> Teachers by organisation
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {musicConnectReach.teachers.map((t) => (
-                      <div
-                        key={t.label}
-                        className="rounded-2xl bg-olive/25 border border-olive/40 p-4 text-center"
-                      >
-                        <p className="text-xl md:text-2xl font-bold text-olive-dark tabular-nums">
-                          {t.count}
-                        </p>
-                        <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.1em] mt-1">
-                          {t.label}
-                        </p>
-                      </div>
-                    ))}
+                  <div className="rounded-2xl bg-coral/35 p-5 text-center">
+                    <p className="text-2xl md:text-3xl font-bold text-coral tabular-nums">
+                      {musicConnectReach.partnerOrganizations}
+                    </p>
+                    <p className="text-[10px] font-normal text-foreground/80 uppercase tracking-[0.12em] mt-1">
+                      Partner Organizations
+                    </p>
                   </div>
                 </div>
 
