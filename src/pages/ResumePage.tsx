@@ -29,7 +29,7 @@ const resumeSections: ResumeSection[] = [
       {
         title: "School Mission Awards",
         subtitle:
-          "For Continuous Inquiry (2023-23); for Enhancing the Lives of Others (2022-25); for Courage & Optimism (2023-24)",
+          "For Continuous Inquiry (2023-24); for Enhancing the Lives of Others (2022-25); for Courage & Optimism (2023-24)",
       },
       { title: "School Choir Award", subtitle: "(2021-22) (2023-24)" },
       {

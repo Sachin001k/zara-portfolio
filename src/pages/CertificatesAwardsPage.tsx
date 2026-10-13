@@ -1,23 +1,66 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Award, GraduationCap, Trophy, Mic2, type LucideIcon } from "lucide-react";
+import { Award, GraduationCap, Trophy, Mic2, Medal, Users, type LucideIcon } from "lucide-react";
 import MarqueeText from "@/components/MarqueeText";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
-// Placeholder dates/details below are drawn from other pages on the site (Resume, Music, Music Connect).
-// Confirm exact dates and add certificate images/PDFs when available.
-const certificates: {
+type CertificateImage = { src: string; title: string; detail: string };
+
+const img = (file: string, title: string, detail: string): CertificateImage => ({
+  src: `/media/certificates/${file}.jpg`,
+  title,
+  detail,
+});
+
+type Certificate = {
   icon: LucideIcon;
   title: string;
   issuer: string;
   date: string;
   description: string;
-}[] = [
+  /** Certificate photos, optionally split into labelled groups. */
+  groups?: { label?: string; images: CertificateImage[]; portrait?: boolean }[];
+  note?: string;
+};
+
+// Placeholder dates/details below are drawn from other pages on the site (Resume, Music, Music Connect).
+const certificates: Certificate[] = [
   {
-    icon: Trophy,
-    title: "CREST Gold Award",
-    issuer: "British Science Association",
-    date: "2023 – 2024",
-    description:
-      "Independent research project in music and wellness, awarded CREST Gold for exceptional scientific inquiry.",
+    icon: Medal,
+    title: "Academic & Mission Awards",
+    issuer: "American School of Bombay",
+    date: "2020 – 2025",
+    description: "School awards recognising academic excellence, the arts and the ASB mission.",
+    groups: [
+      {
+        label: "ASB Mission Awards",
+        images: [
+          img("asb-mission-continuous-inquiry-2023-24", "Continuous Inquiry", "ASB Mission Award · 2023-24"),
+          img("asb-mission-enhancing-lives-2022-23", "Enhancing the Lives of Others", "ASB Mission Award · 2022-23"),
+          img("asb-mission-enhancing-lives-2023-24", "Enhancing the Lives of Others", "ASB Mission Award · 2023-24"),
+          img("asb-mission-enhancing-lives-2024-25", "Enhancing the Lives of Others", "ASB Mission Award · 2024-25"),
+        ],
+      },
+      {
+        label: "Academic Excellence",
+        images: [
+          img("asb-physics-2023-24", "Physics", "Certificate of Excellence · 2023-24"),
+          img("asb-biology-2024-25", "Biology 10", "Certificate of Excellence · 2024-25"),
+          img("asb-english-2023-24", "English", "Certificate of Excellence · 2023-24"),
+          img("asb-english-2024-25", "English 10", "Certificate of Excellence · 2024-25"),
+          img("asb-mathematics-2021-22", "Mathematics", "Certificate of Achievement · 2021-22"),
+        ],
+      },
+      {
+        label: "Arts",
+        images: [
+          img("asb-choir-2021-22", "Choir", "Certificate of Achievement · 2021-22"),
+          img("asb-choir-2023-24", "Choir", "Certificate of Excellence · 2023-24"),
+          img("asb-theatre-2020-21", "Theatre", "Certificate of Achievement · 2020-21"),
+        ],
+      },
+    ],
+    note: "Also awarded the ASB Mission Award for Courage & Optimism.",
   },
   {
     icon: GraduationCap,
@@ -25,6 +68,43 @@ const certificates: {
     issuer: "Trinity College London",
     date: "2020 – 2023",
     description: "Graded examination in music performance and theory, achieved with distinction.",
+    groups: [
+      {
+        portrait: true,
+        images: [
+          img("trinity-grade1-piano", "Grade 1 Piano", "With Distinction · November 2018"),
+          img("trinity-grade5-vocals", "Grade 5 Vocals (Rock & Pop)", "With Merit · July 2024"),
+        ],
+      },
+    ],
+  },
+  {
+    icon: Users,
+    title: "Leadership & Community Service",
+    issuer: "ASB Model United Nations · The Vocal Studio & Mann",
+    date: "2023 – 2025",
+    description: "Recognition for Model UN participation and music-based community service.",
+    groups: [
+      {
+        images: [
+          img("asbmun-2024", "ASBMUN XII — Delegate", "Model United Nations · April 2024"),
+          img("asbmun-2025", "ASBMUN XIII Conference", "Model United Nations · April 2025"),
+          img(
+            "vocal-studio-mann-2023",
+            "Cause It's Christmas — Mann NGO",
+            "5 hours of community service · December 2023",
+          ),
+        ],
+      },
+    ],
+  },
+  {
+    icon: Trophy,
+    title: "CREST Gold Award",
+    issuer: "British Science Association",
+    date: "2023 – 2024",
+    description:
+      "Independent research project in music and wellness, awarded CREST Gold for exceptional scientific inquiry.",
   },
   {
     icon: Mic2,
@@ -50,7 +130,38 @@ const certificates: {
   },
 ];
 
+const cardShadow = {
+  boxShadow: "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
+};
+
+const CardHeader = ({ cert }: { cert: Certificate }) => {
+  const Icon = cert.icon;
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2.5">
+        <span
+          className="w-9 h-9 rounded-lg flex items-center justify-center text-primary-foreground shrink-0"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--olive)), hsl(var(--olive-dark)))",
+            boxShadow: "0 2px 8px hsl(var(--olive) / 0.3)",
+          }}
+        >
+          <Icon size={16} strokeWidth={1.4} />
+        </span>
+        <div>
+          <h3 className="text-sm md:text-base font-normal text-foreground leading-snug">{cert.title}</h3>
+          <p className="text-[10px] md:text-[11px] font-light text-muted-foreground">{cert.issuer}</p>
+        </div>
+      </div>
+      <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-light">{cert.date}</p>
+      <p className="text-xs font-light text-muted-foreground leading-relaxed">{cert.description}</p>
+    </div>
+  );
+};
+
 const CertificatesAwardsPage = () => {
+  const [enlarged, setEnlarged] = useState<CertificateImage | null>(null);
+
   return (
     <div className="page-scroll relative min-h-screen">
       <div className="absolute inset-0 grid-paper-bg" />
@@ -69,7 +180,7 @@ const CertificatesAwardsPage = () => {
         <MarqueeText text="CERTIFICATES · AWARDS · GRADES · RECOGNITION" />
 
         <div className="px-6 pb-12">
-          <div className="container mx-auto max-w-3xl">
+          <div className="container mx-auto max-w-4xl">
             <motion.div
               className="mb-10 text-center"
               initial={{ opacity: 0, y: -15 }}
@@ -89,49 +200,102 @@ const CertificatesAwardsPage = () => {
               />
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {certificates.map((cert, i) => {
-                const Icon = cert.icon;
-                return (
-                  <motion.div
+            {/* Cards with certificate photos */}
+            <div className="space-y-6">
+              {certificates
+                .filter((c) => c.groups)
+                .map((cert, i) => (
+                  <motion.section
                     key={cert.title}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="glass-card p-5 space-y-3"
-                    style={{
-                      boxShadow:
-                        "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
-                    }}
+                    className="glass-card p-5 md:p-7 space-y-5"
+                    style={cardShadow}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className="w-9 h-9 rounded-lg flex items-center justify-center text-primary-foreground shrink-0"
-                        style={{
-                          background: "linear-gradient(135deg, hsl(var(--olive)), hsl(var(--olive-dark)))",
-                          boxShadow: "0 2px 8px hsl(var(--olive) / 0.3)",
-                        }}
-                      >
-                        <Icon size={16} strokeWidth={1.4} />
-                      </span>
-                      <div>
-                        <h3 className="text-sm font-normal text-foreground leading-snug">{cert.title}</h3>
-                        <p className="text-[10px] font-light text-muted-foreground">{cert.issuer}</p>
+                    <CardHeader cert={cert} />
+                    {cert.groups!.map((group, gi) => (
+                      <div key={group.label ?? gi}>
+                        {group.label && (
+                          <p className="text-[10px] uppercase tracking-[0.18em] text-coral font-light mb-3">
+                            {group.label}
+                          </p>
+                        )}
+                        <div
+                          className={`grid gap-4 ${
+                            group.portrait
+                              ? "grid-cols-2 md:grid-cols-4"
+                              : group.images.length === 4
+                                ? "grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4"
+                                : "grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3"
+                          }`}
+                        >
+                          {group.images.map((image) => (
+                            <figure key={image.src}>
+                              <button
+                                type="button"
+                                onClick={() => setEnlarged(image)}
+                                className={`group block w-full ${group.portrait ? "aspect-[3/4]" : "aspect-[4/3]"} overflow-hidden rounded-xl border border-border/20 bg-background/40`}
+                                aria-label={`Enlarge: ${image.title}`}
+                              >
+                                <img
+                                  src={image.src}
+                                  alt={`${image.title} certificate`}
+                                  loading="lazy"
+                                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                                />
+                              </button>
+                              <figcaption className="mt-2 px-0.5">
+                                <p className="text-xs font-normal text-foreground leading-snug">{image.title}</p>
+                                <p className="text-[10px] font-light text-muted-foreground mt-0.5">
+                                  {image.detail}
+                                </p>
+                              </figcaption>
+                            </figure>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                    <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-light">
-                      {cert.date}
-                    </p>
-                    <p className="text-xs font-light text-muted-foreground leading-relaxed">
-                      {cert.description}
-                    </p>
+                    ))}
+                    {cert.note && (
+                      <p className="text-xs font-light italic text-muted-foreground">{cert.note}</p>
+                    )}
+                  </motion.section>
+                ))}
+            </div>
+
+            {/* Text-only cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+              {certificates
+                .filter((c) => !c.groups)
+                .map((cert, i) => (
+                  <motion.div
+                    key={cert.title}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="glass-card p-5"
+                    style={cardShadow}
+                  >
+                    <CardHeader cert={cert} />
                   </motion.div>
-                );
-              })}
+                ))}
             </div>
           </div>
         </div>
       </div>
+
+      <Dialog open={enlarged !== null} onOpenChange={(open) => !open && setEnlarged(null)}>
+        <DialogContent className="max-w-3xl p-3 bg-card border-border/30">
+          <DialogTitle className="text-sm font-light text-foreground pr-8">{enlarged ? `${enlarged.title} — ${enlarged.detail}` : ""}</DialogTitle>
+          {enlarged && (
+            <img
+              src={enlarged.src}
+              alt={`${enlarged.title} certificate`}
+              className="w-full max-h-[80vh] object-contain rounded-lg"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
