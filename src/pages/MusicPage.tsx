@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Piano,
@@ -12,18 +13,59 @@ import {
 } from "lucide-react";
 import { siteContact } from "@/lib/site";
 import GooglePhotosVideo from "@/components/GooglePhotosVideo";
+import InlineVideo from "@/components/InlineVideo";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useYouTubeStats } from "@/hooks/useYouTubeStats";
 
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@ZaraPereira-k3b";
-const FEATURED_VIDEO_ID = "fw6jvI9JViQ";
+// "Zara | If I Ain't Got You (ASB Winter Concert - Choir | Live Performance Dec2025)"
+const FEATURED_VIDEO_ID = "5lQOUcgSLpc";
 
 const AMIS_WEBSITE_URL = "https://amis-online.org/";
 const AMIS_LIVE_STREAM_2026_URL = "https://www.youtube.com/live/m6mxKxBDjhE?si=A5QWkmIzVHXab1MD";
-const AMIS_CHOIR_ALBUM_URL =
-  "https://photos.google.com/share/AF1QipMJK92wMgRg9Ed4x5dJ0sQ-X_zxYxjADbA5nFu3tArM_2rNmnhXvA-52E9az-s71A?obfsgid=117410301389813695342&key=cFlnX1NndVF5bVN2ZEVsdGRNMG1jTDNPdEJnTWxn";
-const AMIS_HONOUR_CHOIR_ALBUM_URL = "https://photos.app.goo.gl/cSKMyhnuLNrVE8Fm9";
-const MUSIC_REFERENCE_ALBUM_URL =
-  "https://photos.google.com/share/AF1QipNAJK6rqvpZ-fOgBnzs85oHjSdTuvBhilZ70jByFIPMYbjpxfHEWcORQwz-fHn_FA?obfsgid=117410301389813695342&key=cFd0OTZOZDRvcHEzVTA5cVNjVDUzY1Nodk9PeUtn";
+// Choir participation photos, in order: school choir (black), STOP GAPS (colourful), then AMIS.
+const SCHOOL_CHOIR_PHOTOS = ["46", "47", "48", "50"].map((id) => ({
+  src: `/media/choir-story/photo-${id}.jpg`,
+  alt: "Zara performing with the school choir",
+}));
+const STOP_GAPS_PHOTOS = ["05", "10", "06", "11"].map((id) => ({
+  src: `/media/choir-story/photo-${id}.jpg`,
+  alt: "Zara performing with the STOP GAPS choir",
+}));
+
+// Photos from the AMIS honour choir album (https://photos.app.goo.gl/cSKMyhnuLNrVE8Fm9).
+const AMIS_HONOUR_CHOIR_PHOTOS = [
+  { src: "/media/amis-honour-choir/honour-choir-1.jpg", alt: "Zara at the AMIS Jeju 2026 mural" },
+  { src: "/media/amis-honour-choir/honour-choir-2.jpg", alt: "AMIS honour choir on stage" },
+  { src: "/media/amis-honour-choir/honour-choir-3.jpg", alt: "AMIS honour choir singers in concert" },
+  { src: "/media/amis-honour-choir/honour-choir-4.jpg", alt: "AMIS Asian HS Honor Choir Gala Concert 2026" },
+  { src: "/media/amis-honour-choir/honour-choir-5.jpg", alt: "AMIS gala concert performance" },
+  { src: "/media/amis-honour-choir/honour-choir-6.jpg", alt: "AMIS honour choir singers close-up" },
+  { src: "/media/amis-honour-choir/honour-choir-7.jpg", alt: "AMIS honour choir at Korea International School, Jeju" },
+  { src: "/media/amis-honour-choir/honour-choir-8.jpg", alt: "AMIS honour choir full stage view" },
+];
+const CHOIR_STORY_ALBUM_URL = "https://photos.app.goo.gl/ygnEk2r1XqfezfNE7";
+// Pool of media from the choir story album above; a random selection is shown on each visit.
+const CHOIR_STORY_PHOTO_POOL = [
+  "12", "13", "14", "15", "16", "17", "18", "20", "21", "22", "23", "26", "27", "32", "33", "34", "35", "36", "39", "49"
+].map((id) => ({ src: `/media/choir-story/photo-${id}.jpg`, alt: "A moment from Zara's choir story" }));
+const CHOIR_STORY_VIDEO_POOL = ["02", "09", "19", "25", "29", "30", "38", "44"].map((id) => ({
+  src: `/media/choir-story/video-${id}.mp4`,
+  poster: `/media/choir-story/video-${id}.jpg`,
+}));
+
+// Photos from the "Zara singing" album (ZARA_SINGING_ALBUM_URL); a random 8 are shown on each visit.
+const ZARA_SINGING_PHOTO_POOL = ["01", "11", "12", "13", "16", "18", "20", "25", "27", "29", "30"].map(
+  (id) => ({ src: `/media/zara-singing/photo-${id}.jpg`, alt: "Zara's music through the years" }),
+);
+
+const pickRandom = <T,>(items: T[], count: number) =>
+  [...items]
+    .map((item) => ({ item, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .slice(0, count)
+    .map(({ item }) => item);
+
 const ZARA_SINGING_ALBUM_URL =
   "https://photos.google.com/share/AF1QipNy3AZzH-UFUpPX3yLdBnJveOJug01CcPgwg3hx6knM92byDSiVAnm7Z8biZIobcA?x=106694151&obfsgid=117410301389813695342&key=NWVfNHM1Z0lTMmJXTXp0eUU0SHhBVDVudWVnb05B";
 
@@ -64,10 +106,9 @@ const journeyMilestones: {
   description: string;
 }[] = [
   {
-    // Placeholder date — docx asked to correct this to "Since Grade 8"; confirm actual start year.
     icon: Sparkles,
-    label: "Since Grade 8",
-    date: "2022 – Present",
+    label: "Since the age of 5",
+    date: "2014 – Present",
     description:
       "Early piano lessons, discovering a love for singing, and finding joy in every note.",
   },
@@ -125,6 +166,10 @@ const PlayIcon = () => (
 );
 
 const MusicPage = () => {
+  const [enlargedPhoto, setEnlargedPhoto] = useState<{ src: string; alt: string } | null>(null);
+  const [choirStoryPhotos] = useState(() => pickRandom(CHOIR_STORY_PHOTO_POOL, 8));
+  const [choirStoryVideos] = useState(() => pickRandom(CHOIR_STORY_VIDEO_POOL, 4));
+  const [singingPhotos] = useState(() => pickRandom(ZARA_SINGING_PHOTO_POOL, 8));
   const { data: youtubeStats } = useYouTubeStats(recentVideos.map((v) => videoIdFromUrl(v.url)));
   const subscriberCount = youtubeStats?.subscribers ?? FALLBACK_SUBSCRIBERS;
   const videoCount = youtubeStats?.videos ?? FALLBACK_VIDEO_COUNT;
@@ -289,48 +334,68 @@ const MusicPage = () => {
                   "0 12px 40px -10px hsl(var(--shadow-color) / 0.12), inset 0 1px 0 hsl(var(--cream) / 0.5)",
               }}
             >
-              <p className="text-sm text-muted-foreground font-light leading-relaxed mb-6 max-w-2xl">
-                Zara performs with AMIS — the Association for Music in International Schools — an
-                international choir and honor ensemble programme bringing together student
-                musicians from schools around the world for festivals, workshops, and live
-                performances. Zara has been admitted to the selective honour choir AMIS.
-              </p>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                {[
-                  { src: "/media/amis-choir/choir-1.jpg", alt: "AMIS choir performing on stage" },
-                  { src: "/media/amis-choir/choir-2.jpg", alt: "AMIS choir ensemble singing" },
-                  { src: "/media/amis-choir/choir-3.jpg", alt: "AMIS small vocal ensemble" },
-                  { src: "/media/amis-choir/choir-4.jpg", alt: "AMIS children's choir performance" },
-                ].map((photo) => (
-                  <div
-                    key={photo.src}
-                    className="aspect-square rounded-xl overflow-hidden border border-border/20"
+              <div className="space-y-3 text-sm text-muted-foreground font-light leading-relaxed mb-8 max-w-2xl">
+                <p>
+                  Zara has performed in multiple choirs, both at school and in selective-entry honour
+                  choirs. She was selected at 8 to compete in the prestigious STOP GAPS choir in
+                  Mumbai, and performed at the NCPA. She has been selected to participate in the AMIS
+                  honour choir for 3 consecutive years.
+                </p>
+                <p>
+                  <a
+                    href={AMIS_WEBSITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-olive underline underline-offset-2 hover:text-olive-dark transition-colors"
                   >
-                    <img
-                      src={photo.src}
-                      alt={photo.alt}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                ))}
+                    AMIS
+                  </a>{" "}
+                  — the Association for Music in International Schools — is an international choir
+                  and honor ensemble programme bringing together student musicians from schools
+                  around the world for festivals, workshops, and live performances.
+                </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <GooglePhotosVideo
-                  href={AMIS_CHOIR_ALBUM_URL}
-                  label="Watch AMIS choir performances"
-                  poster="/media/amis-choir-poster.jpg"
-                />
+              {[
+                { title: "School choir", photos: SCHOOL_CHOIR_PHOTOS },
+                { title: "STOP GAPS choir", photos: STOP_GAPS_PHOTOS },
+                { title: "AMIS honour choir", photos: AMIS_HONOUR_CHOIR_PHOTOS },
+              ].map((group) => (
+                <div key={group.title} className="mb-6">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/70 font-light mb-3">
+                    {group.title}
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {group.photos.map((photo) => (
+                      <button
+                        key={photo.src}
+                        type="button"
+                        onClick={() => setEnlargedPhoto(photo)}
+                        className="group aspect-square rounded-xl overflow-hidden border border-border/20"
+                        aria-label={`Enlarge photo: ${photo.alt}`}
+                      >
+                        <img
+                          src={photo.src}
+                          alt={photo.alt}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              <div className="max-w-md mb-6">
                 <GooglePhotosVideo
                   href={AMIS_LIVE_STREAM_2026_URL}
                   label="Watch the 2026 AMIS live stream"
+                  poster="https://i.ytimg.com/vi/m6mxKxBDjhE/hqdefault.jpg"
+                  showLabel={false}
                 />
-                <GooglePhotosVideo
-                  href={AMIS_HONOUR_CHOIR_ALBUM_URL}
-                  label="View the AMIS honour choir album"
-                />
+                <p className="text-xs font-light text-muted-foreground mt-2">
+                  Watch the 2026 AMIS live stream
+                </p>
               </div>
 
               <a
@@ -340,6 +405,63 @@ const MusicPage = () => {
                 className="inline-flex items-center gap-1.5 text-xs font-light text-olive hover:text-olive-dark transition-colors"
               >
                 Learn more about AMIS <ExternalLink size={12} />
+              </a>
+            </div>
+          </motion.section>
+
+          {/* ── Zara's Choir Story ── */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="mb-16"
+          >
+            <div className="flex items-center gap-2 mb-5">
+              <Users size={20} strokeWidth={1.4} className="text-olive" />
+              <h2 className="text-xl md:text-2xl font-light text-foreground tracking-wide">
+                Zara&rsquo;s Choir Story
+              </h2>
+            </div>
+
+            <div
+              className="bg-card/80 backdrop-blur-sm border border-border/30 rounded-2xl p-6 md:p-8"
+              style={{
+                boxShadow:
+                  "0 12px 40px -10px hsl(var(--shadow-color) / 0.12), inset 0 1px 0 hsl(var(--cream) / 0.5)",
+              }}
+            >
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                {choirStoryPhotos.map((photo) => (
+                  <button
+                    key={photo.src}
+                    type="button"
+                    onClick={() => setEnlargedPhoto(photo)}
+                    className="group aspect-square rounded-xl overflow-hidden border border-border/20"
+                    aria-label={`Enlarge photo: ${photo.alt}`}
+                  >
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                {choirStoryVideos.map((video) => (
+                  <InlineVideo key={video.src} src={video.src} poster={video.poster} />
+                ))}
+              </div>
+
+              <a
+                href={CHOIR_STORY_ALBUM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-light text-olive hover:text-olive-dark transition-colors"
+              >
+                Link to choir story <ExternalLink size={12} />
               </a>
             </div>
           </motion.section>
@@ -394,42 +516,49 @@ const MusicPage = () => {
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-light mt-8 mb-3">
               Music, Through the Years
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
-                { src: "/media/childhood/child-1.jpg", alt: "Zara singing as a child" },
-                { src: "/media/childhood/child-2.jpg", alt: "Zara performing on stage as a child" },
-                { src: "/media/childhood/child-3.jpg", alt: "Zara playing piano" },
-                { src: "/media/childhood/child-4.jpg", alt: "Zara singing with a microphone" },
-              ].map((photo) => (
-                <div
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+              {singingPhotos.map((photo) => (
+                <button
                   key={photo.src}
-                  className="aspect-square rounded-xl overflow-hidden border border-border/20"
+                  type="button"
+                  onClick={() => setEnlargedPhoto(photo)}
+                  className="group aspect-square rounded-xl overflow-hidden border border-border/20"
+                  aria-label={`Enlarge photo: ${photo.alt}`}
                 >
                   <img
                     src={photo.src}
                     alt={photo.alt}
                     loading="lazy"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                   />
-                </div>
+                </button>
               ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 max-w-xl">
-              <GooglePhotosVideo
-                href={MUSIC_REFERENCE_ALBUM_URL}
-                label="Music reference videos"
-                poster="/media/music-reference-poster.jpg"
-              />
-              <GooglePhotosVideo
-                href={ZARA_SINGING_ALBUM_URL}
-                label="Zara singing"
-                poster="/media/zara-singing-poster.jpg"
-              />
-            </div>
+            <a
+              href={ZARA_SINGING_ALBUM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-light text-olive hover:text-olive-dark transition-colors"
+            >
+              Music through the years – Zara singing <ExternalLink size={12} />
+            </a>
           </motion.section>
         </div>
       </div>
+
+      <Dialog open={enlargedPhoto !== null} onOpenChange={(open) => !open && setEnlargedPhoto(null)}>
+        <DialogContent className="max-w-4xl p-2 bg-card border-border/30">
+          <DialogTitle className="sr-only">{enlargedPhoto?.alt ?? "Choir photo"}</DialogTitle>
+          {enlargedPhoto && (
+            <img
+              src={enlargedPhoto.src}
+              alt={enlargedPhoto.alt}
+              className="w-full max-h-[80vh] object-contain rounded-lg"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

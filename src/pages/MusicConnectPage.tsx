@@ -1,10 +1,29 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import MarqueeText from "@/components/MarqueeText";
 import GooglePhotosVideo from "@/components/GooglePhotosVideo";
-import { musicConnectReach, schoolSessions } from "@/data/schoolsSessions";
-import { Calendar, School, Users, Eye, Download } from "lucide-react";
+import { musicConnectReach, participantOrganisations, schoolSessions } from "@/data/schoolsSessions";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Calendar, School, Users, Eye, Download, HeartHandshake, Building2, Newspaper } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CURRICULUM_PDF_URL = "/documents/Music-Connect-Curriculum.pdf";
+
+const HEAL_THE_HEALERS_FLYERS = [
+  { src: "/media/heal-the-healers/flyer.jpg", alt: "Heal the Healers information session flyer" },
+  {
+    src: "/media/heal-the-healers/three-pillars-flyer.jpg",
+    alt: "Heal the Healers: three pillars workshop series flyer",
+  },
+];
+
+// Rotating card colours, matching the Reach stat cards.
+const ORG_CARD_STYLES = [
+  "bg-olive/35 text-foreground",
+  "bg-blush/80 text-foreground",
+  "bg-olive-dark text-cream",
+  "bg-coral/35 text-foreground",
+];
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -126,6 +145,8 @@ const SchoolPost = ({
 );
 
 const MusicConnectPage = () => {
+  const [flyer, setFlyer] = useState<(typeof HEAL_THE_HEALERS_FLYERS)[number] | null>(null);
+
   return (
     <div className="page-scroll relative">
       <div className="absolute inset-0 grid-paper-bg" />
@@ -302,8 +323,119 @@ const MusicConnectPage = () => {
               </motion.aside>
             </div>
 
-            <motion.div
+            {/* ── Heal the Healers ── */}
+            <motion.section
               custom={2}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="glass-card p-5 md:p-8 mb-12"
+              style={{
+                boxShadow:
+                  "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
+              }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 items-start">
+                <div>
+                  <p className="text-[10px] font-light text-coral uppercase tracking-[0.2em] mb-1">
+                    Music for caregivers · Mumbai
+                  </p>
+                  <h2 className="text-2xl md:text-3xl font-extralight text-foreground tracking-tight flex items-center gap-2 mb-4">
+                    <HeartHandshake size={22} className="text-olive" /> Heal the Healers
+                  </h2>
+                  <div className="space-y-3 text-sm font-light text-muted-foreground leading-relaxed">
+                    <p>
+                      <span className="font-medium text-foreground">Heal the Healers</span> brings a
+                      music-based wellness intervention for caregivers to Mumbai. Zara facilitates the
+                      programme alongside{" "}
+                      <span className="font-medium text-foreground">Dr Farah Husain</span>, Senior
+                      Anaesthesiologist and music therapist certified by the Indian Association of
+                      Music Therapists, and founder of the music-therapy-based life skills programme{" "}
+                      <em>Symphonies of Strength</em>.
+                    </p>
+                    <p>
+                      Caregivers, teachers and others in supportive roles often carry the stress of
+                      others while rarely taking time for their own wellbeing. The series began with a
+                      free information session on Saturday, 26 September 2026, followed by a workshop
+                      series built on three pillars: <em>Resilience</em>,{" "}
+                      <em>Happiness as a way of life</em> and <em>Coping with Stress</em>.
+                    </p>
+                    <p>The sessions have reached 100+ caregivers to date.</p>
+                  </div>
+
+                  <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-light text-muted-foreground">
+                    <li className="rounded-xl bg-background/60 border border-border/20 px-3 py-2">
+                      <span className="block text-[10px] uppercase tracking-[0.15em] text-coral mb-0.5">
+                        Information session
+                      </span>
+                      Sat, 26 September · 5:00 PM IST
+                    </li>
+                    <li className="rounded-xl bg-background/60 border border-border/20 px-3 py-2">
+                      <span className="block text-[10px] uppercase tracking-[0.15em] text-coral mb-0.5">
+                        Workshops (5–6 PM, via Zoom)
+                      </span>
+                      Oct 10 · Oct 17 · Oct 25 · Oct 29
+                    </li>
+                  </ul>
+
+                  <Link
+                    to="/psychology-publications"
+                    className="mt-5 inline-flex items-center gap-1.5 text-xs font-light text-olive hover:text-olive-dark transition-colors"
+                  >
+                    <Newspaper size={13} /> Featured in The Times of India – NIE
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {HEAL_THE_HEALERS_FLYERS.map((f) => (
+                    <button
+                      key={f.src}
+                      type="button"
+                      onClick={() => setFlyer(f)}
+                      className="group overflow-hidden rounded-xl border border-border/20 bg-background/40"
+                      aria-label={`Enlarge: ${f.alt}`}
+                    >
+                      <img
+                        src={f.src}
+                        alt={f.alt}
+                        loading="lazy"
+                        className="w-full aspect-[2/3] object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </motion.section>
+
+            {/* ── Participant organisations ── */}
+            <motion.section
+              custom={3}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="mb-12"
+            >
+              <div className="flex items-center gap-2 mb-5">
+                <Building2 size={18} className="text-olive" />
+                <h2 className="text-xl md:text-2xl font-extralight text-foreground tracking-tight">
+                  Participant Organisations
+                </h2>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {participantOrganisations.map((org, i) => (
+                  <div
+                    key={org.name}
+                    className={`rounded-2xl p-4 min-h-[96px] flex flex-col justify-center text-center ${ORG_CARD_STYLES[i % ORG_CARD_STYLES.length]}`}
+                  >
+                    <p className="text-sm font-medium leading-snug">{org.name}</p>
+                    <p className="text-[9px] uppercase tracking-[0.15em] mt-1.5 opacity-70">{org.type}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+
+            <motion.div
+              custom={4}
               initial="hidden"
               animate="visible"
               variants={sectionVariants}
@@ -315,12 +447,21 @@ const MusicConnectPage = () => {
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-8">
               {schoolSessions.map((session, index) => (
-                <SchoolPost key={session.id} session={session} index={index + 3} />
+                <SchoolPost key={session.id} session={session} index={index + 5} />
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      <Dialog open={flyer !== null} onOpenChange={(open) => !open && setFlyer(null)}>
+        <DialogContent className="max-w-2xl p-2 bg-card border-border/30">
+          <DialogTitle className="sr-only">{flyer?.alt ?? "Heal the Healers flyer"}</DialogTitle>
+          {flyer && (
+            <img src={flyer.src} alt={flyer.alt} className="w-full max-h-[85vh] object-contain rounded-lg" />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -6,9 +6,17 @@ type GooglePhotosVideoProps = {
   href?: string;
   label?: string;
   poster?: string;
+  /** Show the label over the thumbnail (default true). */
+  showLabel?: boolean;
 };
 
-const GooglePhotosVideo = ({ photoId, href, label, poster }: GooglePhotosVideoProps) => {
+const GooglePhotosVideo = ({
+  photoId,
+  href,
+  label,
+  poster,
+  showLabel = true,
+}: GooglePhotosVideoProps) => {
   const url = href || (photoId ? getSchoolVideoUrl(photoId) : "#");
 
   return (
@@ -34,9 +42,11 @@ const GooglePhotosVideo = ({ photoId, href, label, poster }: GooglePhotosVideoPr
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-foreground shadow-lg transition-transform group-hover:scale-105">
           <Play size={22} className="ml-0.5 text-coral" fill="currentColor" />
         </span>
-        <span className="text-xs font-light tracking-wide px-4 text-center">
-          {label ?? "Watch video of Zara singing or teaching"}
-        </span>
+        {showLabel && (
+          <span className="text-xs font-light tracking-wide px-4 text-center">
+            {label ?? "Watch video of Zara singing or teaching"}
+          </span>
+        )}
       </div>
     </a>
   );

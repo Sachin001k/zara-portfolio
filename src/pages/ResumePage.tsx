@@ -1,81 +1,221 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import MarqueeText from "@/components/MarqueeText";
-import { ChevronDown, Heart, Briefcase, Share2, FileText, Award, Users } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ChevronDown, Award, HeartHandshake, Stethoscope, GraduationCap, Mic2, PenLine } from "lucide-react";
+
+interface ResumeItem {
+  title: string;
+  subtitle?: string;
+  link?: { label: string; to: string };
+  points?: string[];
+}
 
 interface ResumeSection {
   id: string;
   icon: React.ReactNode;
   title: string;
   accent: string;
-  items: { title: string; subtitle: string; description: string }[];
+  items: ResumeItem[];
 }
 
 const resumeSections: ResumeSection[] = [
   {
-    id: "wellness-taskforce",
-    icon: <Heart size={16} />,
-    title: "Wellness Taskforce",
-    accent: "olive",
-    items: [
-      { title: "School Wellness Taskforce Member", subtitle: "Active Contributor", description: "Contributing to school-wide wellness initiatives, policy development, and student mental health programs." },
-      { title: "Peer Support Programs", subtitle: "Wellness Advocate", description: "Organizing and facilitating peer support sessions and wellness awareness campaigns." },
-    ],
-  },
-  {
-    id: "nordoff-robbins",
-    icon: <Users size={16} />,
-    title: "Nordoff Robbins",
-    accent: "coral",
-    items: [
-      { title: "Nordoff Robbins Music Therapy Training", subtitle: "Certified Practitioner", description: "Completed training in the Nordoff Robbins approach to music therapy, focusing on creative music-making as a therapeutic tool." },
-      { title: "Applied Music Therapy Sessions", subtitle: "Practical Experience", description: "Conducted guided music therapy sessions with diverse groups, applying Nordoff Robbins techniques." },
-    ],
-  },
-  {
-    id: "work-experience",
-    icon: <Briefcase size={16} />,
-    title: "Work Experience",
-    accent: "olive",
-    items: [
-      { title: "Music Wellness Curriculum Developer", subtitle: "Founder & Lead Educator", description: "Designed and delivered a comprehensive music wellness curriculum reaching 50+ students across multiple schools." },
-      { title: "Music Workshop Facilitator", subtitle: "Community Educator", description: "Led interactive music workshops for students and teachers, integrating wellness principles into creative expression." },
-    ],
-  },
-  {
-    id: "share-the-music",
-    icon: <Share2 size={16} />,
-    title: "Share the Music",
-    accent: "coral",
-    items: [
-      { title: "Share the Music CSR Initiative", subtitle: "Founder & Organizer", description: "Led music-based community service projects bringing instruments and music education to underserved communities." },
-      { title: "AMIS Choir & Performances", subtitle: "Vocalist & Performer", description: "Participated in international music festivals, collaborative performances, and AMIS choir events." },
-    ],
-  },
-  {
-    id: "research-paper",
-    icon: <FileText size={16} />,
-    title: "Research Paper",
-    accent: "olive",
-    items: [
-      { title: "Music & Wellness Research Paper", subtitle: "Academic Publication", description: "Published research exploring the intersection of music education and student well-being, with data-driven findings." },
-      { title: "CREST Gold Award", subtitle: "Research Excellence", description: "Independent research project in music and wellness, awarded CREST Gold for exceptional scientific inquiry." },
-    ],
-  },
-  {
-    id: "grades",
+    id: "awards-honors",
     icon: <Award size={16} />,
-    title: "Grades & Certifications",
+    title: "Awards & Honors",
+    accent: "olive",
+    items: [
+      {
+        title: "School Mission Awards",
+        subtitle:
+          "For Continuous Inquiry (2023-23); for Enhancing the Lives of Others (2022-25); for Courage & Optimism (2023-24)",
+      },
+      { title: "School Choir Award", subtitle: "(2021-22) (2023-24)" },
+      {
+        title: "School Subject Excellence Awards",
+        subtitle: "Physics (2023-24), Biology (2024-25), English (2023-24) (2024-25)",
+      },
+      {
+        title: "Student of the Course Award",
+        subtitle: "Oxford Psychology Summer Course at University of Cambridge (July 2024)",
+      },
+    ],
+  },
+  {
+    id: "music-wellness",
+    icon: <HeartHandshake size={16} />,
+    title: "Music Wellness Initiatives",
     accent: "coral",
     items: [
-      { title: "Trinity College London", subtitle: "Music Performance & Theory", description: "Achieved graded examinations in music performance and theory through Trinity College London." },
-      { title: "IB Diploma Programme", subtitle: "International Baccalaureate", description: "Pursuing a well-rounded IB education with focus on music, arts, and sciences." },
+      {
+        title: "Researcher, Effect of Music on Adolescent Mood",
+        subtitle: "January 2026 - June 2026",
+        points: [
+          "Conducted a longitudinal, quasi-experimental study examining the relationship between structured musical engagement and adolescent mood among 30 participants, using the Moods and Feelings Questionnaire (MFQ) and statistical analysis including repeated-measures ANOVA and paired-samples t-tests.",
+          "Found a statistically significant decline in MFQ scores from 9.57 to 2.07 (p < .001), with 83% of participants showing improvement across five sessions.",
+          "Accepted for publication in the Scopus-indexed journal Adolescência & Saúde and presented at the 4th Global Conference on Psychology. CREST Gold Award by British Science Association (October 2026)",
+        ],
+      },
+      {
+        title: "Founder, Music Connect",
+        subtitle: "June 2025 - Present",
+        link: { label: "www.zaramusicconnect.com/music-connect", to: "/music-connect" },
+        points: [
+          "Founded an open-access music wellness curriculum inspired by Nordoff-Robbins approaches, using structured musical activities to support Social and Emotional Learning (SEL) among children and adolescents.",
+          "Developed the curriculum into an accessible resource for educators and caregivers, securing downloads and endorsements from clinical psychologists and music therapists.",
+          "Expanded Music Connect through schools, NGOs, and organizational collaborations, reaching 6,000+ students across India, the UK, and the US. Received national media coverage.",
+          "Trained 182 educators, instructors, and caregivers to independently deliver music wellness and SEL sessions, creating a scalable train-the-trainer model for the curriculum.",
+          "Selected as the only high school student trainer for the American School of Bombay’s Academy, delivering educator training on music-based approaches to student well-being.",
+        ],
+      },
+      {
+        title: "Facilitator, Heal the Healers",
+        subtitle: "August 2026 - Present",
+        points: [
+          "Bringing a music-based wellness intervention for caregivers to Mumbai, working alongside Dr. Farah Husain, Senior Anaesthesiologist and music therapist certified by the Indian Association of Music Therapists.",
+          "Facilitating a series of music-based wellness sessions designed to support the emotional well-being of caregivers, reaching 100+ caregivers to date.",
+          "Featured in The Times of India – Newspaper in Education (NIE) for her work.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "music-therapy",
+    icon: <Stethoscope size={16} />,
+    title: "Music Therapy Training & Professional Experience",
+    accent: "olive",
+    items: [
+      {
+        title: "Trainee, Nordoff-Robbins Center for Music Therapy at NYU Steinhardt",
+        subtitle: "July 2025, July 2026",
+        points: [
+          "Completed the Center’s online high school music therapy program, exploring Nordoff-Robbins approaches through interactive sessions, therapeutic exercises, and music-making.",
+          "Selected as the only high school student invited to an in-person, graduate-level training course, learning alongside graduate students and practitioners.",
+          "Participated in hands-on workshops, therapeutic exercises, group facilitation, and collaborative music-making; received the Managing Director’s appreciation for contributions to group exercises and music-making.",
+        ],
+      },
+      {
+        title: "Trainee, HopeStone Interventions – Education Center for Children with Special Needs",
+        subtitle: "Oct 2024 - May 2025",
+        points: [
+          "Trained weekly under Sara Ellen D’Souza, Music Therapist and Special Educator, initially observing and assisting individual music therapy sessions for 3 children with neurodevelopmental disorders.",
+          "Progressed to facilitating individual sessions, using structured music-based activities to support communication, turn-taking, and developmental skills.",
+          "Tracked progress through parent-guided feedback, identifying improvements in skills and behaviors observed in the children’s day-to-day lives.",
+        ],
+      },
+      {
+        title: "Trainee & Facilitator, The Music Circle",
+        subtitle: "September 2024",
+        points: [
+          "Training under Priyanka Seth Pandit, founder of The Music Circle and a Music Together® Master Teacher, observing approaches that use music to support children’s social and emotional development.",
+          "Facilitating selected Music Connect activities with children while gaining hands-on exposure to music-based teaching, group engagement, and SEL practices.",
+        ],
+      },
+      {
+        title: "Student, Music Therapy Principles at Berklee College of Music",
+        subtitle: "June 2025",
+        points: [
+          "Completing a 12-week, undergraduate-level course covering music therapy methods, treatment planning, therapeutic processes, and applications across clinical and community settings.",
+          "Applied principles of assessment, implementation, evaluation, and documentation to music-based therapeutic interventions.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "school-leadership",
+    icon: <GraduationCap size={16} />,
+    title: "School Leadership",
+    accent: "coral",
+    items: [
+      {
+        title:
+          "Environmental Committee Lead (Y11), Task Force Steering Committee Lead (Y12) & School Mental Health Ambassador (Y12), ASB Student Wellbeing Task Force",
+        subtitle: "September 2024 - Present",
+        points: [
+          "Led the introduction of soundproof study pods and expanded silent study spaces, with the initiative subsequently implemented in the Elementary School.",
+          "Proposed reforms to the school schedule, including restructuring the 2-hour Eagle’s Hour and reducing repetitive advisory periods to increase student autonomy and productive study time.",
+          "Currently discussing the launch of Eagle Connect, a proposed buddy-based system designed to strengthen peer connection and support across the school community; presented wellness recommendations to faculty and school leadership.",
+          "Selected for a schoolwide leadership role to lead wellbeing initiatives, including Wellbeing Wednesdays and student workshops, and serve as a Student Ambassador for the school’s wellbeing programme.",
+        ],
+      },
+      {
+        title: "Leader, ASB Share the Music CSR",
+        subtitle: "2023 - Present",
+        points: [
+          "Oversaw instrumental groups, coordinating lesson plans, music theory resources, attendance, and program delivery in collaboration with teachers and NGO-school representatives.",
+          "Taught piano and singing during sessions and gathered partner feedback to strengthen the program.",
+        ],
+      },
+      {
+        title: "Co-Deputy Secretary General, ASB Model United Nations",
+        subtitle: "2021 - 2025",
+        points: [
+          "Served on the MUN Executive Team for 4 years, culminating in the role of Co-Deputy Secretary General.",
+          "Coordinated communication with 30 schools across Asia for ASBMUN, supporting school participation and conference-wide coordination.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "music-performance",
+    icon: <Mic2 size={16} />,
+    title: "Music Performance",
+    accent: "olive",
+    items: [
+      {
+        title: "Honor Choir Member, Association for Music in International Schools (AMIS)",
+        subtitle: "2022 - Present",
+        points: [
+          "Selected for the AMIS Honor Choir in Korea (2024, 2026) and Singapore (2025) with a ~20% acceptance rate; performed as Alto 1 alongside 80+ international student musicians across 6 pieces.",
+        ],
+      },
+      {
+        title: "Singer & Pianist",
+        subtitle: "2014 - Present",
+        points: [
+          "Completed Grades 1–7 in Vocals (Rock & Pop) through Trinity College London; trained in singing and piano.",
+          "Performed at live venues and events, including a café and international jazz festival.",
+        ],
+      },
+      {
+        title: "Musical Theatre Artist & Vocal Coach, ASB & Akanksha Foundation",
+        subtitle: "2022 - 2025",
+        points: [
+          "Performed solos and ensemble roles across 4 productions over 4 years of musical theatre at the American School of Bombay.",
+          "Mentored Akanksha Foundation (NGO) students in pitch-matching, vocal technique, and song preparation for their musical.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "psychology-writing",
+    icon: <PenLine size={16} />,
+    title: "Psychology & Writing",
+    accent: "coral",
+    items: [
+      {
+        title: "Psychology Student, Fitzwilliam College at University of Cambridge Summer Program",
+        points: [
+          "Studied Psychology through research, presentations, and collaborative projects, including exploration of the intersection of music and psychology.",
+          "Graduated top of the Psychology class and received the Student of the Course Award for academic achievement and personal contribution to the program.",
+        ],
+      },
+      {
+        title: "Mental Health Writer, YoungMinds & The Times of India",
+        subtitle: "2024 - Present",
+        points: [
+          "Writes on youth mental health and well-being as a resident contributor to YoungMinds, the UK’s leading youth mental health charity.",
+          "Published “Addressing Adolescent Mental Health in Schools” in The Times of India NIE, drawing on an interview with a clinical psychologist to examine mental health support in schools.",
+          "Published “Music as a tool to heal: From the stage to the operating theatre” in The Times of India, NIE, drawing on an interview with trained Music Therapist Dr Husain ahead of their collaborative “Heal the Healers” initiative.",
+        ],
+      },
     ],
   },
 ];
 
 const ResumePage = () => {
-  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(["wellness-taskforce"]));
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(["awards-honors"]));
 
   const toggle = (id: string) => {
     setExpandedIds((prev) => {
@@ -100,7 +240,7 @@ const ResumePage = () => {
       />
 
       <div className="relative z-10">
-        <MarqueeText text="WELLNESS · NORDOFF ROBBINS · EXPERIENCE · SHARE THE MUSIC · RESEARCH · GRADES" />
+        <MarqueeText text="AWARDS · MUSIC WELLNESS · MUSIC THERAPY · LEADERSHIP · PERFORMANCE · PSYCHOLOGY & WRITING" />
 
         <div className="px-6 pb-12">
           <div className="container mx-auto max-w-3xl">
@@ -182,20 +322,41 @@ const ResumePage = () => {
                               transition={{ delay: j * 0.1, duration: 0.3 }}
                               className="p-4 rounded-xl bg-background/50 border border-border/20 backdrop-blur-sm"
                             >
-                              <h4 className="font-normal text-foreground text-xs">{item.title}</h4>
-                              <p
-                                className="text-[10px] font-light mt-0.5"
-                                style={{
-                                  background: section.accent === "olive"
-                                    ? "linear-gradient(135deg, hsl(var(--olive)), hsl(var(--olive-dark)))"
-                                    : "linear-gradient(135deg, hsl(var(--coral)), hsl(var(--brown-red)))",
-                                  WebkitBackgroundClip: "text",
-                                  WebkitTextFillColor: "transparent",
-                                }}
-                              >
-                                {item.subtitle}
-                              </p>
-                              <p className="text-xs font-light text-muted-foreground mt-2 leading-relaxed">{item.description}</p>
+                              <h4 className="font-normal text-foreground text-xs leading-snug">{item.title}</h4>
+                              {item.subtitle && (
+                                <p
+                                  className="text-[10px] font-light mt-0.5"
+                                  style={{
+                                    background: section.accent === "olive"
+                                      ? "linear-gradient(135deg, hsl(var(--olive)), hsl(var(--olive-dark)))"
+                                      : "linear-gradient(135deg, hsl(var(--coral)), hsl(var(--brown-red)))",
+                                    WebkitBackgroundClip: "text",
+                                    WebkitTextFillColor: "transparent",
+                                  }}
+                                >
+                                  {item.subtitle}
+                                </p>
+                              )}
+                              {item.link && (
+                                <Link
+                                  to={item.link.to}
+                                  className="inline-block text-[10px] font-light text-olive underline underline-offset-2 hover:text-olive-dark mt-1"
+                                >
+                                  {item.link.label}
+                                </Link>
+                              )}
+                              {item.points && (
+                                <ul className="mt-2 space-y-1.5 list-disc pl-4 marker:text-muted-foreground/50">
+                                  {item.points.map((point) => (
+                                    <li
+                                      key={point}
+                                      className="text-xs font-light text-muted-foreground leading-relaxed"
+                                    >
+                                      {point}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </motion.div>
                           ))}
                         </div>

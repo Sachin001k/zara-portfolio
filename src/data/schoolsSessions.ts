@@ -155,6 +155,25 @@ export const musicConnectReach = {
   partnerOrganizations: 20,
 } as const;
 
+// Organisations whose staff, students or members have taken part in Music Connect sessions.
+export const participantOrganisations: { name: string; type: string }[] = [
+  { name: "Akanksha Foundation", type: "NGO" },
+  { name: "Aseema", type: "NGO" },
+  { name: "Vipla Foundation", type: "NGO" },
+  { name: "Happy Feet Home", type: "NGO" },
+  { name: "Association for Voluntary Action (AVA)", type: "NGO" },
+  { name: "Kotak Education Foundation", type: "Foundation" },
+  { name: "UPMI Foundation", type: "Foundation" },
+  { name: "VMMC", type: "Medical College" },
+  { name: "AIIMS Nagpur", type: "Hospital" },
+  { name: "AIIMS Rishikesh", type: "Hospital" },
+  { name: "Fortis Escorts Hospital, Faridabad", type: "Hospital" },
+  { name: "Goldcrest High, Vashi", type: "School" },
+  { name: "American School of Bombay", type: "School" },
+  { name: "AOE", type: "Organisation" },
+  { name: "Temptation International LLC, Dubai", type: "Organisation" },
+];
+
 export function getSchoolVideoUrl(photoId: string) {
   return googlePhotosMediaUrl(photoId);
 }

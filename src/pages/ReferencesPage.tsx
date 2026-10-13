@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { User } from "lucide-react";
+import { User, Music2 } from "lucide-react";
 import MarqueeText from "@/components/MarqueeText";
+import InlineVideo from "@/components/InlineVideo";
 
 // Placeholder list — names/roles pulled from Zara's existing session history on this site.
 // Add remaining references and contact details when available.
@@ -20,6 +21,12 @@ const references: {
     context: "Supervises Zara's ongoing work leading Music Connect activities and observing practice (Sept 2025 – present).",
   },
 ];
+
+// Video references from https://photos.app.goo.gl/6ii82H1RmkQJVKb98
+const musicReferenceVideos = [1, 2, 3, 4].map((n) => ({
+  src: `/media/music-reference/reference-${n}.mp4`,
+  poster: `/media/music-reference/reference-${n}.jpg`,
+}));
 
 const ReferencesPage = () => {
   return (
@@ -94,6 +101,36 @@ const ReferencesPage = () => {
                 </motion.div>
               ))}
             </div>
+
+            <motion.section
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-12"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Music2 size={18} strokeWidth={1.4} className="text-coral" />
+                <h2 className="text-lg md:text-xl font-light text-foreground tracking-wide">
+                  Music Reference
+                </h2>
+              </div>
+              <div
+                className="glass-card p-4 md:p-5 grid grid-cols-1 sm:grid-cols-2 gap-4"
+                style={{
+                  boxShadow:
+                    "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
+                }}
+              >
+                {musicReferenceVideos.map((video, i) => (
+                  <InlineVideo
+                    key={video.src}
+                    src={video.src}
+                    poster={video.poster}
+                    title={`Music reference video ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </motion.section>
 
             <p className="text-xs font-light text-muted-foreground text-center mt-8">
               Contact details available on request.
