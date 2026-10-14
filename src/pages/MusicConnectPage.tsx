@@ -312,14 +312,6 @@ const MusicConnectPage = () => {
                   Reaching schools and communities across India, the UK, and the US
                 </p>
 
-                <div className="pt-2 border-t border-border/20">
-                  <p className="text-[10px] font-light text-coral uppercase tracking-[0.2em] mb-1">
-                    Endorsements
-                  </p>
-                  <p className="text-xs font-light text-muted-foreground leading-relaxed">
-                    Endorsements will appear here as they are shared.
-                  </p>
-                </div>
               </motion.aside>
             </div>
 

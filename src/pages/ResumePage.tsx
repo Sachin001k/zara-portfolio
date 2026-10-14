@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import MarqueeText from "@/components/MarqueeText";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "react-router-dom";
-import { ChevronDown, Award, HeartHandshake, Stethoscope, GraduationCap, Mic2, PenLine } from "lucide-react";
+import { ChevronDown, FileText, ExternalLink, Award, HeartHandshake, Stethoscope, GraduationCap, Mic2, PenLine } from "lucide-react";
 
 interface ResumeItem {
   title: string;
@@ -214,7 +215,10 @@ const resumeSections: ResumeSection[] = [
   },
 ];
 
+const RESUME_DRIVE_ID = "1NomWpp4JF_N12FfhtovaPb7sajLM0UVX";
+
 const ResumePage = () => {
+  const [showPdf, setShowPdf] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(["awards-honors"]));
 
   const toggle = (id: string) => {
@@ -259,6 +263,14 @@ const ResumePage = () => {
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               />
+              <button
+                type="button"
+                onClick={() => setShowPdf(true)}
+                className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-olive px-4 py-2 text-xs font-light text-primary-foreground hover:bg-olive-dark transition-colors"
+                style={{ boxShadow: "0 4px 15px hsl(var(--olive) / 0.3)" }}
+              >
+                <FileText size={13} /> View resume (PDF)
+              </button>
             </motion.div>
 
             <div className="space-y-4">
@@ -369,6 +381,24 @@ const ResumePage = () => {
           </div>
         </div>
       </div>
+      <Dialog open={showPdf} onOpenChange={setShowPdf}>
+        <DialogContent className="max-w-5xl p-3 bg-card border-border/30">
+          <DialogTitle className="text-sm font-light text-foreground pr-8">Zara Pereira — Resume</DialogTitle>
+          <iframe
+            src={`https://drive.google.com/file/d/${RESUME_DRIVE_ID}/preview`}
+            title="Zara Pereira resume"
+            className="w-full h-[75vh] rounded-lg border border-border/30 bg-background"
+          />
+          <a
+            href={`https://drive.google.com/file/d/${RESUME_DRIVE_ID}/view`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="self-start inline-flex items-center gap-1.5 text-xs font-light text-olive hover:text-olive-dark transition-colors"
+          >
+            Open in Google Drive <ExternalLink size={12} />
+          </a>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

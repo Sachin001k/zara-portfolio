@@ -5,9 +5,7 @@ import {
   Mic2,
   Award,
   Users,
-  FlaskConical,
   Sparkles,
-  Music2,
   ExternalLink,
   type LucideIcon,
 } from "lucide-react";
@@ -115,38 +113,17 @@ const journeyMilestones: {
   },
   {
     icon: Mic2,
-    label: "Performance Highlights",
-    date: "2016 – 2020",
+    label: "Performance & Choir Highlights",
+    date: "2016 – Present",
     description:
-      "Solo recitals, ensemble concerts, and recorded performances showcasing musical growth.",
-  },
-  {
-    icon: Award,
-    label: "AMIS & Trinity Grades",
-    date: "2020 – 2023",
-    description:
-      "AMIS Choir international performances and Trinity College London certifications in voice and theory.",
-  },
-  {
-    icon: FlaskConical,
-    label: "Research & Awards",
-    date: "2023 – 2024",
-    description:
-      "CREST Gold Award research and music therapy publications advancing the field.",
+      "Solo recitals, ensemble concerts, and recorded performances showcasing musical growth, plus AMIS Choir international performances.",
   },
   {
     icon: Users,
-    label: "Community Impact",
+    label: "Community Impact & Future Projects",
     date: "2024 – Present",
     description:
       "Music wellness workshops and community outreach programs bringing music to all.",
-  },
-  {
-    icon: Music2,
-    label: "Future Projects",
-    date: "2025 – Beyond",
-    description:
-      "More musical explorations, collaborations, and creative ventures on the horizon.",
   },
 ];
 
