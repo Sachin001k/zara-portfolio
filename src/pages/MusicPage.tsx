@@ -44,15 +44,16 @@ const AMIS_HONOUR_CHOIR_PHOTOS = [
   { src: "/media/amis-honour-choir/honour-choir-7.jpg", alt: "AMIS honour choir at Korea International School, Jeju" },
   { src: "/media/amis-honour-choir/honour-choir-8.jpg", alt: "AMIS honour choir full stage view" },
 ];
-const CHOIR_STORY_ALBUM_URL = "https://photos.app.goo.gl/ygnEk2r1XqfezfNE7";
-// Pool of media from the choir story album above; a random selection is shown on each visit.
-const CHOIR_STORY_PHOTO_POOL = [
-  "12", "13", "14", "15", "16", "17", "18", "20", "21", "22", "23", "26", "27", "32", "33", "34", "35", "36", "39", "49"
-].map((id) => ({ src: `/media/choir-story/photo-${id}.jpg`, alt: "A moment from Zara's choir story" }));
-const CHOIR_STORY_VIDEO_POOL = ["02", "09", "19", "25", "29", "30", "38", "44"].map((id) => ({
-  src: `/media/choir-story/video-${id}.mp4`,
-  poster: `/media/choir-story/video-${id}.jpg`,
-}));
+// Zara's Choir Story — hidden for now; uncomment together with the section in the JSX below.
+// const CHOIR_STORY_ALBUM_URL = "https://photos.app.goo.gl/ygnEk2r1XqfezfNE7";
+// // Pool of media from the choir story album above; a random selection is shown on each visit.
+// const CHOIR_STORY_PHOTO_POOL = [
+//   "12", "13", "14", "15", "16", "17", "18", "20", "21", "22", "23", "26", "27", "32", "33", "34", "35", "36", "39", "49"
+// ].map((id) => ({ src: `/media/choir-story/photo-${id}.jpg`, alt: "A moment from Zara's choir story" }));
+// const CHOIR_STORY_VIDEO_POOL = ["02", "09", "19", "25", "29", "30", "38", "44"].map((id) => ({
+//   src: `/media/choir-story/video-${id}.mp4`,
+//   poster: `/media/choir-story/video-${id}.jpg`,
+// }));
 
 // Photos from the "Zara singing" album (ZARA_SINGING_ALBUM_URL); a random 8 are shown on each visit.
 const ZARA_SINGING_PHOTO_POOL = ["01", "11", "12", "13", "16", "18", "20", "25", "27", "29", "30"].map(
@@ -167,8 +168,8 @@ const PlayIcon = () => (
 
 const MusicPage = () => {
   const [enlargedPhoto, setEnlargedPhoto] = useState<{ src: string; alt: string } | null>(null);
-  const [choirStoryPhotos] = useState(() => pickRandom(CHOIR_STORY_PHOTO_POOL, 8));
-  const [choirStoryVideos] = useState(() => pickRandom(CHOIR_STORY_VIDEO_POOL, 4));
+  // const [choirStoryPhotos] = useState(() => pickRandom(CHOIR_STORY_PHOTO_POOL, 8));
+  // const [choirStoryVideos] = useState(() => pickRandom(CHOIR_STORY_VIDEO_POOL, 4));
   const [singingPhotos] = useState(() => pickRandom(ZARA_SINGING_PHOTO_POOL, 8));
   const { data: youtubeStats } = useYouTubeStats(recentVideos.map((v) => videoIdFromUrl(v.url)));
   const subscriberCount = youtubeStats?.subscribers ?? FALLBACK_SUBSCRIBERS;
@@ -409,7 +410,7 @@ const MusicPage = () => {
             </div>
           </motion.section>
 
-          {/* ── Zara's Choir Story ── */}
+          {/* ── Zara's Choir Story — hidden for now (Oct 2026 meeting notes). Remove the comment markers to restore. ──
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -464,7 +465,7 @@ const MusicPage = () => {
                 Link to choir story <ExternalLink size={12} />
               </a>
             </div>
-          </motion.section>
+          </motion.section> */}
 
           {/* ── Musical Journey (reduced prominence) ── */}
           <motion.section

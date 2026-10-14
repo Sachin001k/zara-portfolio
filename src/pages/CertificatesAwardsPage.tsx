@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Award, GraduationCap, Trophy, Mic2, Medal, Users, type LucideIcon } from "lucide-react";
+import { Award, GraduationCap, Trophy, Mic2, Medal, Users, FileImage, type LucideIcon } from "lucide-react";
 import MarqueeText from "@/components/MarqueeText";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
@@ -18,8 +18,8 @@ type Certificate = {
   issuer: string;
   date: string;
   description: string;
-  /** Certificate photos, optionally split into labelled groups. */
-  groups?: { label?: string; images: CertificateImage[]; portrait?: boolean }[];
+  /** Clickable certificate links (each opens its photo), optionally split into labelled groups. */
+  groups?: { label?: string; images: CertificateImage[] }[];
   note?: string;
 };
 
@@ -70,7 +70,6 @@ const certificates: Certificate[] = [
     description: "Graded examination in music performance and theory, achieved with distinction.",
     groups: [
       {
-        portrait: true,
         images: [
           img("trinity-grade1-piano", "Grade 1 Piano", "With Distinction · November 2018"),
           img("trinity-grade5-vocals", "Grade 5 Vocals (Rock & Pop)", "With Merit · July 2024"),
@@ -221,37 +220,29 @@ const CertificatesAwardsPage = () => {
                             {group.label}
                           </p>
                         )}
-                        <div
-                          className={`grid gap-4 ${
-                            group.portrait
-                              ? "grid-cols-2 md:grid-cols-4"
-                              : group.images.length === 4
-                                ? "grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4"
-                                : "grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3"
-                          }`}
-                        >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                           {group.images.map((image) => (
-                            <figure key={image.src}>
-                              <button
-                                type="button"
-                                onClick={() => setEnlarged(image)}
-                                className={`group block w-full ${group.portrait ? "aspect-[3/4]" : "aspect-[4/3]"} overflow-hidden rounded-xl border border-border/20 bg-background/40`}
-                                aria-label={`Enlarge: ${image.title}`}
-                              >
-                                <img
-                                  src={image.src}
-                                  alt={`${image.title} certificate`}
-                                  loading="lazy"
-                                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                                />
-                              </button>
-                              <figcaption className="mt-2 px-0.5">
-                                <p className="text-xs font-normal text-foreground leading-snug">{image.title}</p>
-                                <p className="text-[10px] font-light text-muted-foreground mt-0.5">
+                            <button
+                              key={image.src}
+                              type="button"
+                              onClick={() => setEnlarged(image)}
+                              className="group flex items-start gap-2.5 rounded-xl border border-border/30 bg-background/50 px-3 py-2.5 text-left transition-colors hover:border-olive/50 hover:bg-olive/10"
+                              aria-label={`View certificate: ${image.title}, ${image.detail}`}
+                            >
+                              <FileImage
+                                size={14}
+                                strokeWidth={1.5}
+                                className="mt-0.5 shrink-0 text-olive"
+                              />
+                              <span className="min-w-0">
+                                <span className="block text-xs font-normal text-foreground leading-snug underline decoration-olive/40 underline-offset-2 group-hover:decoration-olive">
+                                  {image.title}
+                                </span>
+                                <span className="block text-[10px] font-light text-muted-foreground mt-0.5">
                                   {image.detail}
-                                </p>
-                              </figcaption>
-                            </figure>
+                                </span>
+                              </span>
+                            </button>
                           ))}
                         </div>
                       </div>
