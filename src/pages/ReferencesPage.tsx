@@ -23,10 +23,18 @@ const references: {
 ];
 
 // Video references from https://photos.app.goo.gl/6ii82H1RmkQJVKb98
-const musicReferenceVideos = [1, 2, 3, 4].map((n) => ({
-  src: `/media/music-reference/reference-${n}.mp4`,
-  poster: `/media/music-reference/reference-${n}.jpg`,
-}));
+// Ordered along Zara's musical journey, from her first teachers to her current coach.
+const musicReferenceVideos: {
+  file: number;
+  name: string;
+  role: string;
+  tag: string;
+}[] = [
+  { file: 3, name: "Marie-Fleur", role: "Zara’s first piano teacher", tag: "Piano" },
+  { file: 4, name: "Angela Mei Lee", role: "Zara’s first music teacher at ASB", tag: "Music · ASB" },
+  { file: 2, name: "Jane Rinard", role: "Zara’s first choir teacher at ASB", tag: "Choir · ASB" },
+  { file: 1, name: "Svea Suresh", role: "Zara’s current vocal coach", tag: "Vocals · Current" },
+];
 
 const ReferencesPage = () => {
   return (
@@ -114,20 +122,34 @@ const ReferencesPage = () => {
                   Music Reference
                 </h2>
               </div>
+              <p className="text-xs font-light text-muted-foreground leading-relaxed mb-4">
+                Video references from the music teachers who have guided Zara, from her first piano
+                lessons to her current vocal training.
+              </p>
               <div
-                className="glass-card p-4 md:p-5 grid grid-cols-1 sm:grid-cols-2 gap-4"
+                className="glass-card p-4 md:p-5 grid grid-cols-1 sm:grid-cols-2 gap-5"
                 style={{
                   boxShadow:
                     "0 8px 32px hsl(var(--shadow-color) / 0.06), inset 0 1px 0 hsl(var(--cream) / 0.5)",
                 }}
               >
-                {musicReferenceVideos.map((video, i) => (
-                  <InlineVideo
-                    key={video.src}
-                    src={video.src}
-                    poster={video.poster}
-                    title={`Music reference video ${i + 1}`}
-                  />
+                {musicReferenceVideos.map((ref) => (
+                  <figure key={ref.file} className="space-y-2.5">
+                    <InlineVideo
+                      src={`/media/music-reference/reference-${ref.file}.mp4`}
+                      poster={`/media/music-reference/reference-${ref.file}.jpg`}
+                      title={`Video reference from ${ref.name}, ${ref.role}`}
+                    />
+                    <figcaption className="flex items-start justify-between gap-3 px-0.5">
+                      <div>
+                        <p className="text-sm font-normal text-foreground leading-snug">{ref.name}</p>
+                        <p className="text-xs font-light text-muted-foreground mt-0.5">{ref.role}</p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-coral/15 px-2.5 py-0.5 text-[9px] uppercase tracking-[0.12em] text-coral">
+                        {ref.tag}
+                      </span>
+                    </figcaption>
+                  </figure>
                 ))}
               </div>
             </motion.section>
