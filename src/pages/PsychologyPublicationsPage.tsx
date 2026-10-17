@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Clock, ArrowRight, X, Maximize2 } from "lucide-react";
+import { BookOpen, Clock, ArrowRight, ArrowUpRight, X } from "lucide-react";
 
 type Article = {
   id: string;
@@ -14,6 +14,10 @@ type Article = {
   excerpt: string;
   /** Paragraphs; entries starting with "## " render as subheadings. */
   body: string[];
+  /** Original article online; "Read full article" links here while the image opens the in-site reader. */
+  url?: string;
+  /** Page images of a paper; when set, the card opens a page-by-page reader instead of the text reader. */
+  pages?: string[];
 };
 
 const articles: Article[] = [
@@ -86,7 +90,23 @@ const articles: Article[] = [
     ],
   },
   {
+    id: "music-connect-research-paper",
+    title:
+      "Music Connect: Effects of a Nordoff-Robbins-Inspired School Curriculum on Adolescent Mood Across Five Sessions",
+    publication: "Adolescência e Saúde – Research Article",
+    date: "Vol. 21, No. 9s, pp. 1473–1481",
+    readTime: "9 pages",
+    byline: "Zara Pereira (American School of Bombay) and Resham Jain (Pangea Society, Mumbai)",
+    image: "/media/publications/adolescencia-e-saude-music-connect.jpg",
+    imageAlt: "Title and abstract of the Music Connect research paper in Adolescência e Saúde",
+    excerpt:
+      "Zara’s peer-reviewed study of 30 adolescents at Aseema Charitable Trust found a significant drop in depressive symptoms across five Music Connect sessions, with 83% of participants showing overall improvement.",
+    body: [],
+    pages: Array.from({ length: 9 }, (_, i) => `/media/publications/music-connect-paper/page-${i + 1}.jpg`),
+  },
+  {
     id: "why-music-matters",
+    url: "https://www.youngminds.org.uk/young-person/blog/why-music-matters/",
     title: "Why Music Matters",
     publication: "YoungMinds",
     date: "July 28, 2026",
@@ -116,6 +136,7 @@ const articles: Article[] = [
   },
   {
     id: "double-edged-sword-add",
+    url: "https://www.youngminds.org.uk/young-person/blog/the-double-edged-sword-of-add/",
     title: "The Double-Edged Sword of ADD",
     publication: "YoungMinds",
     date: "June 23, 2026",
@@ -168,7 +189,7 @@ const ArticleMeta = ({ article }: { article: Article }) => (
 
 const PsychologyPublicationsPage = () => {
   const [selected, setSelected] = useState<Article | null>(null);
-  const [zoomImage, setZoomImage] = useState<Article | null>(null);
+  const [pdfArticle, setPdfArticle] = useState<Article | null>(null);
 
   return (
     <div className="page-scroll relative min-h-screen">
@@ -216,7 +237,7 @@ const PsychologyPublicationsPage = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              The Times of India · The Indian Express · YoungMinds
+              The Times of India · The Indian Express · Adolescência e Saúde · YoungMinds
             </motion.p>
             <motion.div
               className="w-24 h-px mx-auto mt-4"
@@ -246,9 +267,9 @@ const PsychologyPublicationsPage = () => {
                 {/* Screenshot */}
                 <button
                   type="button"
-                  onClick={() => setZoomImage(article)}
+                  onClick={() => (article.pages ? setPdfArticle(article) : setSelected(article))}
                   className="group relative flex items-center justify-center overflow-hidden rounded-xl border border-border/20 bg-white"
-                  aria-label={`Enlarge: ${article.imageAlt}`}
+                  aria-label={`Read here: ${article.title}`}
                 >
                   <img
                     src={article.image}
@@ -257,7 +278,7 @@ const PsychologyPublicationsPage = () => {
                     className="w-full h-full max-h-[460px] object-contain transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                   <span className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-background/85 px-2.5 py-1 text-[10px] font-light text-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Maximize2 size={10} /> Enlarge
+                    <BookOpen size={10} /> Read here
                   </span>
                 </button>
 
@@ -272,13 +293,24 @@ const PsychologyPublicationsPage = () => {
                   <p className="text-sm text-muted-foreground font-light leading-relaxed mb-6">
                     {article.excerpt}
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => setSelected(article)}
-                    className="mt-auto self-start inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-foreground text-background text-xs font-light tracking-wide hover:opacity-90 transition-opacity"
-                  >
-                    Read full article <ArrowRight size={12} />
-                  </button>
+                  {article.url ? (
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto self-start inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-foreground text-background text-xs font-light tracking-wide hover:opacity-90 transition-opacity"
+                    >
+                      Read full article <ArrowUpRight size={12} />
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => (article.pages ? setPdfArticle(article) : setSelected(article))}
+                      className="mt-auto self-start inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-foreground text-background text-xs font-light tracking-wide hover:opacity-90 transition-opacity"
+                    >
+                      {article.pages ? "Read full paper" : "Read full article"} <ArrowRight size={12} />
+                    </button>
+                  )}
                 </div>
               </motion.article>
             ))}
@@ -349,33 +381,54 @@ const PsychologyPublicationsPage = () => {
         )}
       </AnimatePresence>
 
-      {/* Enlarged screenshot */}
+      {/* Paper reader */}
       <AnimatePresence>
-        {zoomImage && (
+        {pdfArticle?.pages && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
-            style={{ background: "hsl(var(--background) / 0.92)", backdropFilter: "blur(16px)" }}
-            onClick={() => setZoomImage(null)}
+            className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 md:p-8"
+            style={{ background: "hsl(var(--background) / 0.9)", backdropFilter: "blur(16px)" }}
+            onClick={() => setPdfArticle(null)}
           >
             <button
-              onClick={() => setZoomImage(null)}
+              onClick={() => setPdfArticle(null)}
               aria-label="Close"
-              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-foreground/10 hover:bg-foreground/20 flex items-center justify-center transition-colors"
+              className="fixed top-5 right-5 z-10 w-9 h-9 rounded-full bg-foreground/10 hover:bg-foreground/20 flex items-center justify-center transition-colors"
             >
               <X size={16} className="text-foreground" />
             </button>
-            <motion.img
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-              src={zoomImage.image}
-              alt={zoomImage.imageAlt}
-              className="max-h-full max-w-full rounded-xl shadow-2xl object-contain"
+            <motion.div
+              initial={{ y: 24, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 24, opacity: 0 }}
+              transition={{ type: "spring", bounce: 0.2 }}
+              className="w-full max-w-3xl my-4"
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              <div className="mb-6 pr-12">
+                <div className="mb-3">
+                  <ArticleMeta article={pdfArticle} />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-light text-foreground leading-snug mb-2" style={serif}>
+                  {pdfArticle.title}
+                </h2>
+                <p className="text-xs text-muted-foreground/80 font-light italic">{pdfArticle.byline}</p>
+              </div>
+              <div className="space-y-4">
+                {pdfArticle.pages.map((page, i) => (
+                  <img
+                    key={page}
+                    src={page}
+                    alt={`Page ${i + 1} of ${pdfArticle.pages!.length}`}
+                    loading={i < 2 ? "eager" : "lazy"}
+                    className="w-full rounded-xl border border-border/20 bg-white"
+                    style={{ boxShadow: "0 16px 48px -12px hsl(var(--shadow-color) / 0.2)" }}
+                  />
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
