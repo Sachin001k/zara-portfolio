@@ -225,7 +225,7 @@ export const categoryMeta: Record<
   Botanicals: {
     icon: Leaf,
     accent: "hsl(140 35% 48%)",
-    cover: "/photography/plumeria-bloom.webp",
+    cover: "/photography/botanical-trunk-blossoms.jpg",
     blurb: "Close-ups of blooms, petals and garden textures.",
   },
   Sunsets: {
